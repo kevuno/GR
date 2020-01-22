@@ -19,6 +19,10 @@ export default {
         };
     }
 }
+
+import {request} from 'http';
+
+
 </script>
 
 <style lang="scss" scoped>

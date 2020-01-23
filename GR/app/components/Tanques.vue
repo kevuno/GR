@@ -41,45 +41,38 @@
 
 <script>
 import ModificarTanques from './ModificarTanques.vue';
+import Precios from './Precios.vue';
 
 export default {
     data: () => {
         return {
             tanques: [
                 {
+                    id: 1,
                     nombre: "Tanque 1",
-                    capacidad_maxima: 4000,
+                    capacidad_maxima: 5000,
                     capacidad_actual: 60,
                     
                 },
                 {
-                    nombre: "Tanque 2",
-                    capacidad_maxima: 2000,
+                    id: 2,
+                    nombre: "Tanque 22",
+                    capacidad_maxima: 2200,
                     capacidad_actual: 1500,
                     
                 },
                 {
+                    id: 3,
                     nombre: "Tanque 3",
-                    capacidad_maxima: 6000,
+                    capacidad_maxima: 4000,
                     capacidad_actual: 1150,
                     
                 },
                 {
+                    id: 4,
                     nombre: "Tanque 4",
-                    capacidad_maxima: 800,
-                    capacidad_actual: 115,
-                    
-                },
-                {
-                    nombre: "Tanque 4",
-                    capacidad_maxima: 800,
-                    capacidad_actual: 115,
-                    
-                },
-                {
-                    nombre: "Tanque 4",
-                    capacidad_maxima: 900,
-                    capacidad_actual: 115,
+                    capacidad_maxima: 3100,
+                    capacidad_actual: 1205,
                     
                 },
             ],
@@ -89,7 +82,6 @@ export default {
         // a computed getter
         litros_total_usados: function () {
             // `this` points to the vm instance
-            debugger
             return this.tanques.reduce(function(a, b){
                 return a + b.capacidad_actual;
             }, 0);
@@ -97,7 +89,6 @@ export default {
         },
         litros_total_disponible: function () {
             // `this` points to the vm instance
-            debugger
             return this.tanques.reduce(function(a, b){
                 return a + b.capacidad_maxima;
             }, 0);
@@ -105,21 +96,19 @@ export default {
         },
     },
     mounted: function () {
-        console.log("MOunting Items");
+        console.log("MOunting Itssems");
     },
     methods: {
         onModificarTanquesTap(args){
             const view = args.view;
             console.log(view);
             this.$navigateTo(ModificarTanques, {
-                props: { 
-                    context: this.tanques,
-                    animated: true,
-                    transition: {
-                        name: "slide",
-                        duration: 200,
-                        curve: "ease"
-                    }
+                transition: {
+                    name:'fade',
+                    duration: 800
+                },
+                props: {
+                    tanques: this.tanques
                 }
             });
 

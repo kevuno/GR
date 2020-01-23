@@ -2,34 +2,24 @@
     <BottomNavigation>
         <TabStrip>
             <TabStripItem class="navigation__item">
-                <Label text="Que ond"></Label>
-                <Image src.decode="font://&#xf015;" class="fas t-36"></Image>
+                <Label text="Tanques"></Label>
+                <Image src.decode="font://&#xf0db;" class="fas t-36"></Image>
             </TabStripItem>
             <TabStripItem class="navigation__item">
-                <Label text="Browse"></Label>
-                <Image src.decode="font://&#xf1ea;" class="far t-36"></Image>
-            </TabStripItem>
-            <TabStripItem class="navigation__item">
-                <Label text="Search"></Label>
-                <Image src.decode="font://&#xf002;" class="fas t-36"></Image>
+                <Label text="Precios"></Label>
+                <Image src.decode="font://&#xf155;" class="far t-36"></Image>
             </TabStripItem>
         </TabStrip>
 
         <TabContentItem>
             <Frame>
-                <Items />
+                <Tanques />
             </Frame>
         </TabContentItem>
 
         <TabContentItem>
             <Frame>
-                <Browse />
-            </Frame>
-        </TabContentItem>
-
-        <TabContentItem>
-            <Frame>
-                <Search />
+                <Precios />
             </Frame>
         </TabContentItem>
 
@@ -37,16 +27,14 @@
 </template>
 
 <script>
-import Items from "./Items.vue";
-import Browse from "./Browse.vue";
-import Search from "./Search.vue";
+import Tanques from "./Tanques.vue";
+import Precios from "./Precios.vue";
 
 export default {
   components: {
-    Items,
-    Browse,
-    Search
-  }
+    Tanques,
+    Precios,
+  },
 };
 </script>
 

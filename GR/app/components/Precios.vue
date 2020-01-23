@@ -7,6 +7,16 @@
         <GridLayout class="page__content">
             <Label class="page__content-icon far" text.decode="&#xf1ea;"></Label>
             <Label class="page__content-placeholder" :text="message"></Label>
+            <Button text="Tap sadkjansibadiabidaj!" @tap="onTap($event)"></Button>
+            <TextView editable="false">
+                <FormattedString>
+                    <Span text="You can use text attributes such as " />
+                    <Span text="bold, " fontWeight="Bold" />
+                    <Span text="italic " fontStyle="Italic" />
+                    <Span :text="message" />
+                    <Span text="underline." textDecoration="Underline" />
+                </FormattedString>
+            </TextView>
         </GridLayout>
     </Page>
 </template>
@@ -15,7 +25,7 @@
 export default {
     data: () => {
         return {
-            message: "<!-- Browse page content goes here -->"
+            message: "Informacion de los precios"
         };
     }
 }

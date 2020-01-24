@@ -6,6 +6,10 @@ import App from "./components/App";
 
 // Vue.use(VueDevtools)
 
+import RadDataForm from 'nativescript-ui-dataform/vue';
+
+Vue.use(RadDataForm);
+
 new Vue({
     render: h => h(App)
 }).$start();

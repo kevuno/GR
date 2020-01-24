@@ -5,7 +5,7 @@
         </ActionBar>
         <GridLayout rows="auto, auto, *, auto">
             <Label row="0" class="header" text="Tanques activos" />
-            <GridLayout horizontalAlignment="center" class="h2" row="1" columns="*, auto, auto, auto, auto" rows="auto">
+            <GridLayout horizontalAlignment="center" class="h2" row="1" columns="*, auto, auto, auto, auto" rows="auto, auto">
                 <Label row="0" col="0" text="Litros Totales: " fontWeight="Bold" />
                 <Label row="0" col="1" :text="litros_total_usados" />
                 <Label row="0" col="2" text="/" />
@@ -14,22 +14,35 @@
             </GridLayout>
             <ListView row="2" for="tanque in tanques" @itemTap="onItemTap">
                 <v-template>
-                    <GridLayout columns="auto, auto" rows="auto, *, *">
-                        <Label row="0" col="0" class="tanque_title" :text="tanque.nombre"></Label>
-                        <Label row="0" col="1" class="h3" :text="porcentaje_tanque_usado(tanque.capacidad_maxima, tanque.capacidad_actual)"></Label>
+                    <GridLayout columns="auto, auto, auto, *, *" rows="auto, *, *">
+                        <Label row="0" col="0" class="tanque_title" :text="tanque.name"></Label>
+                        <Label row="0" col="1" class="h3" :text="porcentaje_tanque_usado(tanque.max_cap, tanque.current_amount)"></Label>
+                        <Button row="0" col="3" horizontalAlignment="right" @tap="onModificarTanqueTap(tanque)">
+                            <FormattedString>
+                                <Span text.decode="&#xf044;" class="fas t-12"></Span>
+                            </FormattedString>
+                        </Button>
+                        <Button row="0" col="4" horizontalAlignment="right" @tap="onDeleteTanqueTap(tanque)">
+                            <FormattedString>
+                                <Span text.decode="&#xf1f8;" class="fas t-12"></Span>
+                            </FormattedString>
+                        </Button>
+                        <!-- <Label row="0" col="4" horizontalAlignment="right" class="far t-12" text.decode="&#xf044;"></Label> -->
+                        <!-- <Image row="0" col="2" horizontalAlignment="right" src.decode="font://&#xf155;" class="far t-36"></Image> -->
                         <Label row="1" col="0" text="Cantidad Maxima: " fontWeight="Bold" />
-                        <Label row="1" col="1" :text="tanque.capacidad_maxima" />
+                        <Label row="1" col="1" :text="tanque.max_cap" />
                         <Label row="2" col="0" text="Cantidad Actual: " fontWeight="Bold" />
-                        <Label row="2" col="1" :text="tanque.capacidad_actual"/>
+                        <Label row="2" col="1" :text="tanque.current_amount"/>
                     </GridLayout>
 
                 </v-template>
             </ListView>
             <StackLayout row="3" orientation="vertical">
+                <Button class="menu_button"text=" + Agregar nuevo tanque" @tap="onNewTanqueTap" />
+                <StackLayout class="hr m-10"></StackLayout>
                 <Button class="menu_button" text="Crear Carga" @tap="onButtonTap" />
                 <Button class="menu_button" text="Crear Descarga" @tap="onButtonTap" />
-                <Button class="menu_button" text="Modificar Tanques" @tap="onModificarTanquesTap" />
-                <Button class="menu_button" text="Modificar Pipas" @tap="onModificatPipasTap" />
+                <StackLayout class="hr m-10"></StackLayout>
                 <Button class="menu_button" text="Generar Reporte" @tap="onButtonTap" />
             </StackLayout>]
             
@@ -40,7 +53,7 @@
 </template>
 
 <script>
-import ModificarTanques from './ModificarTanques.vue';
+import ModificarTanque from './ModificarTanque.vue';
 import Precios from './Precios.vue';
 
 export default {
@@ -49,48 +62,47 @@ export default {
             tanques: [
                 {
                     id: 1,
-                    nombre: "Tanque 1",
-                    capacidad_maxima: 5000,
-                    capacidad_actual: 60,
+                    name: "Tanque 1",
+                    max_cap: 6000,
+                    current_amount: 60,
                     
                 },
                 {
                     id: 2,
-                    nombre: "Tanque 22",
-                    capacidad_maxima: 2200,
-                    capacidad_actual: 1500,
+                    name: "Tanque 22",
+                    max_cap: 4200,
+                    current_amount: 500,
                     
                 },
                 {
                     id: 3,
-                    nombre: "Tanque 3",
-                    capacidad_maxima: 4000,
-                    capacidad_actual: 1150,
+                    name: "Tanque 3",
+                    max_cap: 7000,
+                    current_amount: 1150,
                     
                 },
                 {
                     id: 4,
-                    nombre: "Tanque 4",
-                    capacidad_maxima: 3100,
-                    capacidad_actual: 1205,
+                    name: "Tanque 4",
+                    max_cap: 2100,
+                    current_amount: 205,
                     
                 },
             ],
         }
     },
     computed: {
-        // a computed getter
+        // Calculate total of current used liters
         litros_total_usados: function () {
-            // `this` points to the vm instance
             return this.tanques.reduce(function(a, b){
-                return a + b.capacidad_actual;
+                return a + parseInt(b.current_amount);
             }, 0);
             
         },
+        // Calculate total of available space
         litros_total_disponible: function () {
-            // `this` points to the vm instance
             return this.tanques.reduce(function(a, b){
-                return a + b.capacidad_maxima;
+                return a + parseInt(b.max_cap);
             }, 0);
             
         },
@@ -99,23 +111,49 @@ export default {
         console.log("MOunting Itssems");
     },
     methods: {
-        onModificarTanquesTap(args){
-            const view = args.view;
-            console.log(view);
-            this.$navigateTo(ModificarTanques, {
+        onModificarTanqueTap(tanque){
+            console.log(tanque);
+            this.$showModal(ModificarTanque, {
                 transition: {
                     name:'fade',
-                    duration: 800
+                    duration: 300
                 },
                 props: {
-                    tanques: this.tanques
+                    tanque: tanque
                 }
             });
 
         },
+        /**
+         * Deletes selected tanque if confirmed
+         */
+        onDeleteTanqueTap(tanque){
+            confirm("Esta seguro de que quieres eliminar tanque: " + tanque.name + "?")
+            .then(result => {
+                // Check if user pressed ok
+                if(result){
+                    const index = this.tanques.indexOf(tanque);
+                    this.tanques.splice(index, 1);
+                }
+            });
+            
 
-        onModificatPipasTap(){
+        },
+        onNewTanqueTap(){
+            // Check for empty list
+            if(this.tanques.length == 0){
+                var new_id = 1;
+            }else{
+                var new_id = this.tanques[this.tanques.length - 1].id + 1;
+            }
 
+            let new_tanque = {
+                id: new_id,
+                name: "Nuevo Tanque",
+                max_cap: 0,
+                current_amount: 0,
+            }
+            this.tanques.unshift(new_tanque);
         },
 
         /**

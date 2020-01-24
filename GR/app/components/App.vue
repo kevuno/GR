@@ -7,7 +7,7 @@
             </TabStripItem>
             <TabStripItem class="navigation__item">
                 <Label text="Precios"></Label>
-                <Image src.decode="font://&#xf155;" class="far t-36"></Image>
+                <Image src.decode="font://&#xf155;" class="fas t-36"></Image>
             </TabStripItem>
         </TabStrip>
 

@@ -40,8 +40,8 @@
             <StackLayout row="3" orientation="vertical">
                 <Button class="menu_button"text=" + Agregar nuevo tanque" @tap="onNewTanqueTap" />
                 <StackLayout class="hr m-10"></StackLayout>
-                <Button class="menu_button" text="Crear Carga" @tap="onButtonTap" />
-                <Button class="menu_button" text="Crear Descarga" @tap="onButtonTap" />
+                <Button class="menu_button" text="Crear Carga" @tap="onNewCargaTap" />
+                <Button class="menu_button" text="Crear Descarga" @tap="onNewDescargaTap" />
                 <StackLayout class="hr m-10"></StackLayout>
                 <Button class="menu_button" text="Generar Reporte" @tap="onButtonTap" />
             </StackLayout>]
@@ -54,7 +54,7 @@
 
 <script>
 import ModificarTanque from './ModificarTanque.vue';
-import Precios from './Precios.vue';
+import NewCarga from './NewCarga.vue';
 
 export default {
     data: () => {
@@ -63,28 +63,28 @@ export default {
                 {
                     id: 1,
                     name: "Tanque 1",
-                    max_cap: 6000,
+                    max_cap: 3000,
                     current_amount: 60,
                     
                 },
                 {
                     id: 2,
                     name: "Tanque 22",
-                    max_cap: 4200,
-                    current_amount: 500,
+                    max_cap: 2200,
+                    current_amount: 300,
                     
                 },
                 {
                     id: 3,
                     name: "Tanque 3",
                     max_cap: 7000,
-                    current_amount: 1150,
+                    current_amount: 2250,
                     
                 },
                 {
                     id: 4,
                     name: "Tanque 4",
-                    max_cap: 2100,
+                    max_cap: 7100,
                     current_amount: 205,
                     
                 },
@@ -156,6 +156,27 @@ export default {
             this.tanques.unshift(new_tanque);
         },
 
+        /// HELPER METHODS ///
+
+        onNewCargaTap(){
+            console.log("New Carga tapped");
+            var tanques_disponibles = this.tanques;
+            tanques_disponibles.forEach(function (element) {
+                element.litros_cargados = 0;
+            });
+
+            console.log(tanques_disponibles);
+            this.$showModal(NewCarga, {
+                transition: {
+                    name:'fade',
+                    duration: 300
+                },
+                props: {
+                    context: tanques_disponibles
+                }
+            });
+        },
+
         /**
          * Calcula el porcentaje de litros usados, actual/total en el tanque
          * Redondea a 2 decimales
@@ -168,25 +189,6 @@ export default {
         porcentaje_tanque_usado(total, actual) {
             return "(" + this.porcentaje_tanque_usado_cantidad(total, actual) + "%)";
         },
-
-        onItemTap(args) {
-            const view = args.view;
-            const page = view.page;
-            const tappedItem = view.bindingContext;
-            console.log(tappedItem);
-            // this.$navigateTo(ItemDetails, {
-            //     props: { 
-            //         context: tappedItem,
-            //         animated: true,
-            //         transition: {
-            //             name: "slide",
-            //             duration: 200,
-            //             curve: "ease"
-            //         }
-            //     }
-            // });
-
-        }
     }
 }
 

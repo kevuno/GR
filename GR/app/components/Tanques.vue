@@ -38,12 +38,12 @@
                 </v-template>
             </ListView>
             <StackLayout row="3" orientation="vertical">
-                <Button class="menu_button"text=" + Agregar nuevo tanque" @tap="onNewTanqueTap" />
+                <Button class="big_button"text=" + Agregar nuevo tanque" @tap="onNewTanqueTap" />
                 <StackLayout class="hr m-10"></StackLayout>
-                <Button class="menu_button" text="Crear Carga" @tap="onNewCargaTap" />
-                <Button class="menu_button" text="Crear Descarga" @tap="onNewDescargaTap" />
+                <Button class="big_button" text="Crear Carga" @tap="onNewCargaTap" />
+                <Button class="big_button" text="Crear Descarga" @tap="onNewDescargaTap" />
                 <StackLayout class="hr m-10"></StackLayout>
-                <Button class="menu_button" text="Generar Reporte" @tap="onButtonTap" />
+                <Button class="big_button" text="Generar Reporte" @tap="onButtonTap" />
             </StackLayout>]
             
             
@@ -155,9 +155,9 @@ export default {
             }
             this.tanques.unshift(new_tanque);
         },
-
-        /// HELPER METHODS ///
-
+        /**
+         * Opens the a new view to create a Carga
+         */
         onNewCargaTap(){
             console.log("New Carga tapped");
             var tanques_disponibles = this.tanques;
@@ -176,6 +176,8 @@ export default {
                 }
             });
         },
+
+        /// HELPER METHODS ///
 
         /**
          * Calcula el porcentaje de litros usados, actual/total en el tanque

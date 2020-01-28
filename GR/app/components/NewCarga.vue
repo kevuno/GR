@@ -4,45 +4,56 @@
         <ActionBar>
             <Label text="Crear Carga a Pipas"></Label>
         </ActionBar>
-        <StackLayout>
-            <Label class="header" text="Crear Carga a Pipas" />
-            <GridLayout rows="auto, auto" columns="auto, auto" horizontalAlignment="center">
-                <Label text="Operador: " row="0" col="0" />
-                <TextField row="0" col="1" hint="Nombre de Operador" v-model="operador" />
-                <Label text="Numero de tracto:" row="1" col="0" />
-                <TextField row="1" col="1" v-model="numero_de_tracto" />
-            </GridLayout>
-            <StackLayout class="hr m-10"></StackLayout>
-            <GridLayout rows="auto, auto" columns="*, *" class="m-20">
-                <Label row="0" col="0" class="h3" fontWeight="Bold" text="Seleccionar litros de los tanques" textWrap="true" />
-                <Label row="0" col="1" class="h3" fontWeight="Bold" text="Selecciona cuantos litros entraran en las pipas" textWrap="true" />
-                
-                <StackLayout row="1" col="0" orientation="vertical">                   
-                    <template v-for="tanques_disponible in tanques_disponibles">
-                        <Label :text="tanques_disponible.name"  :key="tanques_disponible.id" />
-                        <TextField  hint="Litros a cargar" v-model="tanques_disponible.litros_cargados"  :key="tanques_disponible.id" @textChange="onTanquesLitrosCargadosChanged"/>                        
-                    </template>
-                </StackLayout>
-                <StackLayout row="1" col="1" orientation="vertical">
-                    <template v-for="pipa in pipas">
-                        <Label :text="pipa.name"  :key="pipa.id" />
-                        <TextField  hint="Litros colocados en esta pipa" v-model="pipa.litros_cargados"  :key="pipa.id" @textChange="onPipasLitrosCargadosChanged"/>                        
-                    </template>
-                </StackLayout>
-            </GridLayout>
-            <StackLayout class="hr m-10"></StackLayout>
-            <GridLayout rows="auto, auto" columns="*, *" class="m-20">
-                <Label text="Total de litos seleccionados de los tanques:" row="0" col="0" class="h3" textWrap="true"/>
-                <Label text="Total de litos cargados a las pipas:" row="0" col="1" class="h3" textWrap="true"/>
-                <Label :text="total_litros_cargados_from_tanques" row="1" col="0" />
-                <Label :text="total_litros_cargados_to_pipas" row="1" col="1" />
-            </GridLayout>
-            <Button text="Finalizar Crear Carga" class="big_button" @tap="onFinishCrearCargaTap" horizontalAlignment="center"/>
-            
-            
-            
-            
-        </StackLayout>
+        <ScrollView orientation="vertical">
+            <StackLayout>
+                <Label class="header" text="Crear Carga a Pipas" />
+                <GridLayout rows="auto, auto" columns="auto, auto" horizontalAlignment="center">
+                    <Label text="Operador: " row="0" col="0" />
+                    <TextField row="0" col="1" hint="Nombre de Operador" v-model="operador" />
+                    <Label text="Numero de tracto:" row="1" col="0" />
+                    <TextField row="1" col="1" v-model="numero_de_tracto" />
+                </GridLayout>
+                <StackLayout class="hr m-10"></StackLayout>            
+                    <GridLayout rows="auto, auto" columns="60*, 40*" class="m-20"> <!-- Format for %width of the cells -->
+                        <Label row="0" col="0" class="h3" fontWeight="Bold" text="Seleccionar litros de los tanques" textWrap="true" />
+                        <Label row="0" col="1" class="h3" fontWeight="Bold" text="Seleccionar litros que iran a pipas" textWrap="true" />
+                        
+                        <StackLayout row="1" col="0" orientation="vertical">                   
+                            <template v-for="tanques_disponible in tanques_disponibles">                        
+                                <GridLayout rows="auto, auto" columns="auto, auto, *" :key="tanques_disponible.id">                            
+                                    <Label row="0" col="0" colSpan="3" :text="tanques_disponible.name"  class="tanque_title"  />                            
+                                    <Label row="1" col="0" text="Litros disp. = "  style="font-style: italic;" />                            
+                                    <Label row="1" col="1" :text="tanques_disponible.current_amount"  style="font-style: italic;" />
+                                    <TextField  row="1" col="2" hint="Litros a cargar"
+                                                v-model="tanques_disponible.litros_cargados"
+                                                :key="tanques_disponible.id" 
+                                                @textChange="onTanquesLitrosCargadosChanged"
+                                                />
+                                </GridLayout>
+                            </template>
+                        </StackLayout>
+                        <StackLayout row="1" col="1" orientation="vertical">
+                            <template v-for="pipa in pipas">                        
+                                <Label :text="pipa.name"  :key="pipa.id" />
+                                <TextField  hint="Litros colocados en esta pipa" v-model="pipa.litros_cargados"  :key="pipa.id" @textChange="onPipasLitrosCargadosChanged"/>                        
+                            </template>
+                        </StackLayout>
+                    </GridLayout>            
+                    <StackLayout class="hr m-10"></StackLayout>
+                    <GridLayout rows="auto, auto" columns="55*, 5*, 40*" class="m-20">
+                        <Label text="Total de litros seleccionados de los tanques:" row="0" col="0" class="h3" textWrap="true" fontWeight="Bold" textAlignment="left"/>
+                        <Label text.decode="&#xf00c;" v-if="are_amounts_valid" row="0" col="1" class="fas t-14"></Label>
+                        <Label text.decode="&#xf00d;" v-if="!are_amounts_valid" row="0" col="1" class="fas t-14"></Label>
+                        <!-- <Image src.decode="font://&#xf155;" ></Image> -->
+                        
+                        <Label text="Total de litros cargados a las pipas:" row="0" col="2" class="h3" textWrap="true" fontWeight="Bold" textAlignment="right"/>
+                        <Label :text="total_litros_cargados_from_tanques" row="1" col="0" class="h1" horizontalAlignment="center" />
+                        <Label text="=" v-if="are_amounts_valid" row="1" col="1" class="h3" fontWeight="Bold"></Label>
+                        <Label :text="total_litros_cargados_to_pipas" row="1" col="2" class="h1" horizontalAlignment="center" />
+                    </GridLayout>
+                    <Button text="Finalizar Crear Carga" class="big_button" @tap="onFinishCrearCargaTap" horizontalAlignment="center"/>
+            </StackLayout>
+        </ScrollView>
     </Page>
 </template>
 
@@ -75,6 +86,10 @@ export default {
         tanques_disponibles() {
             return this.context || {};
         },
+
+        are_amounts_valid(){
+            return this.total_litros_cargados_from_tanques == this.total_litros_cargados_to_pipas;
+        }
     },
     methods: {
 

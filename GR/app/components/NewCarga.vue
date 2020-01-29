@@ -40,7 +40,7 @@
                         </StackLayout>
                     </GridLayout>            
                     <StackLayout class="hr m-10"></StackLayout>
-                    <GridLayout rows="auto, auto" columns="55*, 5*, 40*" class="m-20">
+                    <GridLayout rows="auto, auto" columns="52*, 10*, 38*" class="m-20">
                         <Label text="Total de litros seleccionados de los tanques:" row="0" col="0" class="h3" textWrap="true" fontWeight="Bold" textAlignment="left"/>
                         <Label text.decode="&#xf00c;" v-if="are_amounts_valid" row="0" col="1" class="fas t-14"></Label>
                         <Label text.decode="&#xf00d;" v-if="!are_amounts_valid" row="0" col="1" class="fas t-14"></Label>
@@ -51,7 +51,7 @@
                         <Label text="=" v-if="are_amounts_valid" row="1" col="1" class="h3" fontWeight="Bold"></Label>
                         <Label :text="total_litros_cargados_to_pipas" row="1" col="2" class="h1" horizontalAlignment="center" />
                     </GridLayout>
-                    <Button text="Finalizar Crear Carga" class="big_button" @tap="onFinishCrearCargaTap" horizontalAlignment="center"/>
+                    <Button text="Finalizar Crear Carga"  :isEnabled="are_amounts_valid" class="big_button" @tap="onFinishCrearCargaTap" horizontalAlignment="center"/>
             </StackLayout>
         </ScrollView>
     </Page>
@@ -97,14 +97,26 @@ export default {
             console.log("tanques disponibles changed");
             // Calculate the total amount of liters selected from the available tanks
             this.total_litros_cargados_from_tanques = this.tanques_disponibles.reduce(function(a, b){
-                return a + parseInt(b.litros_cargados);
+                // Clean and check if string is valid
+                let litros_quantity = b.litros_cargados;
+                if (typeof litros_quantity === 'string'){
+                    litros_quantity = litros_quantity.replace(/\s/g,'');
+                }
+                litros_quantity = litros_quantity == "" ? 0 : litros_quantity;
+                return a + parseInt(litros_quantity);
             }, 0);
         },
         onPipasLitrosCargadosChanged(){
             console.log("pipas disponibles changed");
             // Calculate the total amount of liters placed into the available pipes
             this.total_litros_cargados_to_pipas = this.pipas.reduce(function(a, b){
-                return a + parseInt(b.litros_cargados);
+                // Clean and check if string is valid
+                let litros_quantity = b.litros_cargados;
+                if (typeof litros_quantity === 'string'){
+                    litros_quantity = litros_quantity.replace(/\s/g,'');
+                }
+                litros_quantity = litros_quantity == "" ? 0 : litros_quantity;
+                return a + parseInt(litros_quantity);
             }, 0);
         },
         onFinishCrearCargaTap() {

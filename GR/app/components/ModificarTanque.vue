@@ -22,9 +22,8 @@ export default {
     watch: {
         // Whenever the values change, verify convertion to correct types
         tanque: function (new_tanque) {
-            console.dir(new_tanque);
             this.tanque.max_cap = parseInt(new_tanque.max_cap, 10);
-            console.dir(this.tanque);
+            // TODO Update on Server (both the cap and the name)
         }
     },
 };

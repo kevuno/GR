@@ -54,7 +54,7 @@
 
 <script>
 import ModificarTanque from './ModificarTanque.vue';
-import NewCarga from './NewCarga.vue';
+import NewCargaDescarga from './NewCargaDescarga.vue';
 
 export default {
     data: () => {
@@ -137,6 +137,7 @@ export default {
                 }
             });
             
+            // TODO Update on Server
 
         },
         onNewTanqueTap(){
@@ -154,7 +155,10 @@ export default {
                 current_amount: 0,
             }
             this.tanques.unshift(new_tanque);
+
+            // TODO Update on Server
         },
+
         /**
          * Opens the a new view to create a Carga
          */
@@ -166,13 +170,40 @@ export default {
             });
 
             console.log(tanques_disponibles);
-            this.$showModal(NewCarga, {
+            this.$showModal(NewCargaDescarga, {
                 transition: {
                     name:'fade',
                     duration: 300
                 },
                 props: {
-                    context: tanques_disponibles
+                    context: {
+                        tanques_disponibles: tanques_disponibles,
+                        operation_type: "carga"
+                    }
+                }
+            });
+        },
+        /**
+         * Opens the a new view to create a Carga
+         */
+        onNewDescargaTap(){
+            console.log("New Carga tapped");
+            var tanques_disponibles = this.tanques;
+            tanques_disponibles.forEach(function (element) {
+                element.litros_cargados = 0;
+            });
+
+            console.log(tanques_disponibles);
+            this.$showModal(NewCargaDescarga, {
+                transition: {
+                    name:'fade',
+                    duration: 300
+                },
+                props: {
+                    context: {
+                        tanques_disponibles: tanques_disponibles,
+                        operation_type: "descarga"
+                    }
                 }
             });
         },

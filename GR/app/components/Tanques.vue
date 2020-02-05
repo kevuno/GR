@@ -43,7 +43,7 @@
                 <Button class="big_button" text="Crear Carga" @tap="onNewCargaTap" />
                 <Button class="big_button" text="Crear Descarga" @tap="onNewDescargaTap" />
                 <StackLayout class="hr m-10"></StackLayout>
-                <Button class="big_button" text="Generar Reporte" @tap="onButtonTap" />
+                <Button class="big_button" text="Generar Reporte" @tap="onGenerateReportTap" />
             </StackLayout>]
             
             
@@ -55,6 +55,8 @@
 <script>
 import ModificarTanque from './ModificarTanque.vue';
 import NewCargaDescarga from './NewCargaDescarga.vue';
+
+import firebase from 'nativescript-plugin-firebase';
 
 export default {
     data: () => {
@@ -156,7 +158,13 @@ export default {
             }
             this.tanques.unshift(new_tanque);
 
-            // TODO Update on Server
+            // Update DB
+            
+            var new_tanque_db = firebase.push(
+                '/tanques',
+                new_tanque
+            );
+            console.log("created key for tanque: " + new_tanque_db.key);
         },
 
         /**
@@ -206,6 +214,27 @@ export default {
                     }
                 }
             });
+        },
+        onGenerateReportTap(){
+            firebase.login({
+                type: firebase.LoginType.ANONYMOUS,
+            }).then(
+                function (result) {
+                    JSON.stringify(result);
+                    console.log(result);
+                },
+                function (error, error2) {
+                    debugger
+                    console.log("asdasuhdaidhuaisudh");
+                    console.dir(error);
+                    console.dir(error2);
+                }
+            );
+
+            console.log("Querying db");
+            firebase.getValue('/data')
+            .then(result => console.log(JSON.stringify(result)))
+            .catch(error => console.log("Error: " + error));
         },
 
         /// HELPER METHODS ///

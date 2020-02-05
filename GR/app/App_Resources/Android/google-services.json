@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "682082367342",
+    "firebase_url": "https://grapp-f0257.firebaseio.com",
+    "project_id": "grapp-f0257",
+    "storage_bucket": "grapp-f0257.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682082367342:android:cc5f0a6b1959d27810337f",
+        "android_client_info": {
+          "package_name": "org.nativescript.GR"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682082367342-6ablm4a4nlui65onagma02nkmfgg84cj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAdJdTaVBPUsMMNmn_pVxHLcNjoknORik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682082367342-6ablm4a4nlui65onagma02nkmfgg84cj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

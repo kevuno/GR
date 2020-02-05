@@ -82,7 +82,27 @@ export default {
         },
     },
     mounted: function () {
-        console.log("MOunting Itssems");
+        console.log("Reading tanques from DB");
+        firebase.getValue('/tanques')
+            .then(result => {
+                debugger
+                console.dir(result.value);
+                console.log(typeof result.value);
+                console.log(JSON.stringify(result))
+
+                // Save each tanque obj into the array of tanques
+                let tanques_list_obj = result.value;
+                for(var tanque_key in tanques_list_obj) {
+                    if(tanques_list_obj.hasOwnProperty(tanque_key)) {
+                        let tanque_obj= tanques_list_obj[tanque_key];
+                        console.log(tanque_obj);
+                        this.tanques.push(tanque_obj);
+                        //do something with value;
+                    }
+                }
+                
+            })
+            .catch(error => console.log("Error: " + error));
     },
     methods: {
         onModificarTanqueTap(tanque){

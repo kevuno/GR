@@ -62,34 +62,6 @@ export default {
     data: () => {
         return {
             tanques: [
-                {
-                    id: 1,
-                    name: "Tanque 1",
-                    max_cap: 3000,
-                    current_amount: 60,
-                    
-                },
-                {
-                    id: 2,
-                    name: "Tanque 22",
-                    max_cap: 2200,
-                    current_amount: 300,
-                    
-                },
-                {
-                    id: 3,
-                    name: "Tanque 3",
-                    max_cap: 7000,
-                    current_amount: 2250,
-                    
-                },
-                {
-                    id: 4,
-                    name: "Tanque 4",
-                    max_cap: 7100,
-                    current_amount: 205,
-                    
-                },
             ],
         }
     },
@@ -121,7 +93,7 @@ export default {
                     duration: 300
                 },
                 props: {
-                    tanque: tanque
+                    context: tanque
                 }
             });
 
@@ -136,35 +108,37 @@ export default {
                 if(result){
                     const index = this.tanques.indexOf(tanque);
                     this.tanques.splice(index, 1);
+
+                    // Update on Server
+                    firebase.remove(
+                        "tanques/" + tanque.id,
+                    );
                 }
             });
-            
-            // TODO Update on Server
-
         },
         onNewTanqueTap(){
             // Check for empty list
-            if(this.tanques.length == 0){
-                var new_id = 1;
-            }else{
-                var new_id = this.tanques[this.tanques.length - 1].id + 1;
-            }
-
             let new_tanque = {
-                id: new_id,
                 name: "Nuevo Tanque",
                 max_cap: 0,
                 current_amount: 0,
             }
-            this.tanques.unshift(new_tanque);
 
-            // Update DB
-            
+            // Update DB (using setValue instead of push to specify custom ID)
+            var tanques_vue_obj = this.tanques;
             var new_tanque_db = firebase.push(
-                '/tanques',
+                "tanques/",
                 new_tanque
+            ).then(
+                function (result) {
+                    new_tanque.id = result.key;
+                    tanques_vue_obj.unshift(new_tanque);
+                    console.log("created keyy for tanque: " + result.key);
+                }
             );
-            console.log("created key for tanque: " + new_tanque_db.key);
+            
+
+            
         },
 
         /**
@@ -232,7 +206,7 @@ export default {
             );
 
             console.log("Querying db");
-            firebase.getValue('/data')
+            firebase.getValue('/tanques')
             .then(result => console.log(JSON.stringify(result)))
             .catch(error => console.log("Error: " + error));
         },

@@ -52,6 +52,7 @@ export default {
             var new_tanque_db_obj = {};
             new_tanque_db_obj[tanque.id] = tanque;
 
+            console.log("Updaing tanque" + new_tanque_db_obj);
             firebase.update(
                 '/tanques',
                 new_tanque_db_obj

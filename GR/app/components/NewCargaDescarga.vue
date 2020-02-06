@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import firebase from 'nativescript-plugin-firebase';
+
 export default {
     props: ["context"],
 
@@ -190,8 +192,15 @@ export default {
             // Confirm:
             confirm(confirmation_str).then(result => {
                 if(result){
+                    console.log(result);
+                    // Save all necessary info form the transaction in DB
+                    this.saveOperationToDB();
+
+                    console.log("uooooo");
+
                     // Perform substraction of loaded amounts from each tank
                     this.tanques_disponibles.forEach(tanque => {
+                        console.log(tanque);
                         // Subtract or Add liters from or to tanks (depending of the type of operation) and reset values
                         if(this.operation_type == "carga"){
                             tanque.current_amount -= parseInt(tanque.litros_cargados);
@@ -201,10 +210,20 @@ export default {
                             // Error
                             console.error("Error creando transferencia, tipo de operacion invalido");
                         }
+                        // Save new content of tanque in DB
+                        var new_tanque_db_obj = {};
+                        new_tanque_db_obj[tanque.id] = tanque;
+
+                        firebase.update(
+                            '/tanques',
+                            new_tanque_db_obj
+                        );
+
+                        // Clear Values in the form
                         tanque.litros_cargados = 0;
                     });
 
-                    // Clear values of pipas
+                    // Clear values of pipas in the form
                     this.pipas.forEach(pipa => {
                         pipa.litros_cargados = 0;
                     });
@@ -215,6 +234,34 @@ export default {
                 }
             });
 
+        },
+        saveOperationToDB(){
+            var operation_data = {
+                operador: this.operador,
+                numero_de_tracto: this.numero_de_tracto,
+                pipas: this.pipas,
+                total_litros_cargados_from_tanques: this.total_litros_cargados_from_tanques,
+                total_litros_cargados_to_pipas: this.total_litros_cargados_to_pipas,
+                tanques_usados: [],
+                operation_type: this.operation_type
+            }
+
+            this.tanques_disponibles.forEach(function(tanque){
+                if(tanque.litros_cargados != 0){
+                    // Add tanques all tanques that were used
+                    operation_data.tanques_usados.push(tanque);
+                }
+            });
+            console.log(operation_data);
+
+            var new_tanque_db = firebase.push(
+                "operations/",
+                operation_data
+            ).then(
+                function (result) {
+                    console.log("created entry for new operation, key: " + result.key);
+                }
+            ).catch(error => console.log("Error: " + error));
         },
     }
 };

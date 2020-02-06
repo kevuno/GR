@@ -85,17 +85,13 @@ export default {
         console.log("Reading tanques from DB");
         firebase.getValue('/tanques')
             .then(result => {
-                debugger
-                console.dir(result.value);
-                console.log(typeof result.value);
-                console.log(JSON.stringify(result))
-
                 // Save each tanque obj into the array of tanques
                 let tanques_list_obj = result.value;
                 for(var tanque_key in tanques_list_obj) {
                     if(tanques_list_obj.hasOwnProperty(tanque_key)) {
-                        let tanque_obj= tanques_list_obj[tanque_key];
-                        console.log(tanque_obj);
+                        // Save tanque obj into Vue list of tanques
+                        let tanque_obj = tanques_list_obj[tanque_key];
+                        tanque_obj.id = tanque_key; // Add ID property for easy queryings
                         this.tanques.push(tanque_obj);
                         //do something with value;
                     }
@@ -153,7 +149,7 @@ export default {
                 function (result) {
                     new_tanque.id = result.key;
                     tanques_vue_obj.unshift(new_tanque);
-                    console.log("created keyy for tanque: " + result.key);
+                    console.log("created new entry for tanque, key: " + result.key);
                 }
             );
             
@@ -171,7 +167,6 @@ export default {
                 element.litros_cargados = 0;
             });
 
-            console.log(tanques_disponibles);
             this.$showModal(NewCargaDescarga, {
                 transition: {
                     name:'fade',
@@ -189,13 +184,12 @@ export default {
          * Opens the a new view to create a Carga
          */
         onNewDescargaTap(){
-            console.log("New Carga tapped");
+            console.log("New Descarga tapped");
             var tanques_disponibles = this.tanques;
             tanques_disponibles.forEach(function (element) {
                 element.litros_cargados = 0;
             });
 
-            console.log(tanques_disponibles);
             this.$showModal(NewCargaDescarga, {
                 transition: {
                     name:'fade',
@@ -210,25 +204,8 @@ export default {
             });
         },
         onGenerateReportTap(){
-            firebase.login({
-                type: firebase.LoginType.ANONYMOUS,
-            }).then(
-                function (result) {
-                    JSON.stringify(result);
-                    console.log(result);
-                },
-                function (error, error2) {
-                    debugger
-                    console.log("asdasuhdaidhuaisudh");
-                    console.dir(error);
-                    console.dir(error2);
-                }
-            );
-
-            console.log("Querying db");
-            firebase.getValue('/tanques')
-            .then(result => console.log(JSON.stringify(result)))
-            .catch(error => console.log("Error: " + error));
+            // TODO
+            console.log("Generar Reporte Tap");
         },
 
         /// HELPER METHODS ///

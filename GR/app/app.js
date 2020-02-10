@@ -1,31 +1,22 @@
 import Vue from "nativescript-vue";
 
-import App from "./components/App";
-
 // import VueDevtools from 'nativescript-vue-devtools'
 
 // Vue.use(VueDevtools)
 
 import RadDataForm from 'nativescript-ui-dataform/vue';
+import routes from "./routes";
+import BackendService from "./services/backend-service";
 
 Vue.use(RadDataForm);
 
-var firebase = require("nativescript-plugin-firebase");
+// Init  Backend Service and save to be used globablly
+const backendService = new BackendService();
+Vue.prototype.$backendService = backendService;
 
-firebase.init({
-    // Optionally pass in properties for database, authentication and cloud messaging,
-    // see their respective docs.
-    
-}).then(
-    function () {
-      console.log("firebase.init done");
-    },
-    function (error) {
-      console.log("firebase.init error: " + error);
-    }
-);
 
+// Start rendering
 new Vue({
-    render: h => h(App)
+    render: h => h(backendService.isLoggedIn() ? routes.home : routes.login)
 }).$start();
 

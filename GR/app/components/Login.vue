@@ -42,7 +42,7 @@
 </template>
 
 <script>
-    import Home from "./Home";
+    import routes from "../routes/";
 
     export default {
         data() {
@@ -78,15 +78,23 @@
             },
 
             login() {
+                this.$navigateTo(routes.home);
+                var vue_ref = this;
+
                 this.$backendService
-                    .login(this.user)
+                    .login(this.user.email, this.user.password)
                     .then(() => {
-                        this.processing = false;
-                        this.$navigateTo(Home, { clearHistory: true });
+                        console.log("Call resolved");
+                        vue_ref.processing = false;
+                        vue_ref.$navigateTo(routes.home);
+
+                        console.log("This shit is not navigating, why????");
+
                     })
                     .catch(() => {
-                        this.processing = false;
-                        this.alert(
+                        console.log("Call failed");
+                        vue_ref.processing = false;
+                        vue_ref.alert(
                             "Unfortunately we could not find your account."
                         );
                     });

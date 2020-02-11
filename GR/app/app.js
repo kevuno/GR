@@ -10,7 +10,7 @@ import BackendService from "./services/backend-service";
 
 Vue.use(RadDataForm);
 
-// Init  Backend Service and save to be used globablly
+// Init Backend Service and save to be used globablly (this should also init Firebase)
 const backendService = new BackendService();
 Vue.prototype.$backendService = backendService;
 

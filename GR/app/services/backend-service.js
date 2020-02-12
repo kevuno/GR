@@ -1,5 +1,6 @@
 // Init Firebase
 var firebase = require("nativescript-plugin-firebase");
+import * as ApplicationSettings from "application-settings";
 
 
 export default class BackendService {
@@ -9,9 +10,21 @@ export default class BackendService {
     }
 
 
-    initFirebase(onAuthStateChangedCallback){
+    initFirebase(){
+        var class_ref = this;      
         firebase.init({
-          onAuthStateChanged: onAuthStateChangedCallback
+          onAuthStateChanged: function(data) { // optional but useful to immediately re-logon the user when they re-visit your app
+              console.log("\n\n\n\nWAKJNKJKJNDKJNKDJNSKJNFKDJFNDKFJNSDKFJNSDKFJNSDKF");
+              if (data.loggedIn) {
+                  class_ref.is_user_logged_in = true;
+                  // ApplicationSettings.setBoolean("is_user_logged_in", true);
+                  console.log("Logged in to firebase!. User's email address: " + (data.user.email ? data.user.email : "N/A"));
+              }else{
+                class_ref.is_user_logged_in = false;
+                // ApplicationSettings.setBoolean("is_user_logged_in", false);
+                console.log("Logged out from Firebase")
+              }
+          }
         }).then(
             function () {
               console.log("firebase.init done");
@@ -27,7 +40,10 @@ export default class BackendService {
         this.is_user_logged_in = true;
     }
 
-    isLoggedIn() {
+    isUserLoggedIn() {
+        let logged_in_local = ApplicationSettings.getBoolean("is_user_logged_in");
+        console.log("Local logged in:" + logged_in_local);
+        console.log("Class logged in:" + this.is_user_logged_in);
         return this.is_user_logged_in;
     }
 

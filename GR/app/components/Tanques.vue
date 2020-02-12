@@ -1,55 +1,47 @@
 <template lang="html">
-    <Page>
-        <ActionBar>
-            <Label text="Tanques"></Label>
-        </ActionBar>
-        <GridLayout rows="auto, auto, *, auto">
-            <Label row="0" class="header" text="Tanques activos" />
-            <GridLayout horizontalAlignment="center" class="h2" row="1" columns="*, auto, auto, auto, auto" rows="auto, auto">
-                <Label row="0" col="0" text="Litros Totales: " fontWeight="Bold" />
-                <Label row="0" col="1" :text="litros_total_usados" />
-                <Label row="0" col="2" text="/" />
-                <Label row="0" col="3" :text="litros_total_disponible" />
-                <Label row="0" col="4" :text="porcentaje_tanque_usado(litros_total_disponible, litros_total_usados)"/>
-            </GridLayout>
-            <ListView row="2" for="tanque in tanques" @itemTap="onItemTap">
-                <v-template>
-                    <GridLayout columns="auto, auto, auto, *, *" rows="auto, *, *">
-                        <Label row="0" col="0" class="tanque_title" :text="tanque.name"></Label>
-                        <Label row="0" col="1" class="h3" :text="porcentaje_tanque_usado(tanque.max_cap, tanque.current_amount)"></Label>
-                        <Button row="0" col="3" horizontalAlignment="right" @tap="onModificarTanqueTap(tanque)">
-                            <FormattedString>
-                                <Span text.decode="&#xf044;" class="fas t-12"></Span>
-                            </FormattedString>
-                        </Button>
-                        <Button row="0" col="4" horizontalAlignment="right" @tap="onDeleteTanqueTap(tanque)">
-                            <FormattedString>
-                                <Span text.decode="&#xf1f8;" class="fas t-12"></Span>
-                            </FormattedString>
-                        </Button>
-                        <!-- <Label row="0" col="4" horizontalAlignment="right" class="far t-12" text.decode="&#xf044;"></Label> -->
-                        <!-- <Image row="0" col="2" horizontalAlignment="right" src.decode="font://&#xf155;" class="far t-36"></Image> -->
-                        <Label row="1" col="0" text="Cantidad Maxima: " fontWeight="Bold" />
-                        <Label row="1" col="1" :text="tanque.max_cap" />
-                        <Label row="2" col="0" text="Cantidad Actual: " fontWeight="Bold" />
-                        <Label row="2" col="1" :text="tanque.current_amount"/>
-                    </GridLayout>
-
-                </v-template>
-            </ListView>
-            <StackLayout row="3" orientation="vertical">
-                <Button class="big_button"text=" + Agregar nuevo tanque" @tap="onNewTanqueTap" />
-                <StackLayout class="hr m-10"></StackLayout>
-                <Button class="big_button" text="Crear Carga" @tap="onNewCargaTap" />
-                <Button class="big_button" text="Crear Descarga" @tap="onNewDescargaTap" />
-                <StackLayout class="hr m-10"></StackLayout>
-                <Button class="big_button" text="Generar Reporte" @tap="onGenerateReportTap" />
-            </StackLayout>]
-            
-            
-            
+    <GridLayout rows="auto, auto, *, auto">
+        <Label row="0" class="header" text="Tanques activos" />
+        <GridLayout horizontalAlignment="center" class="h2" row="1" columns="*, auto, auto, auto, auto" rows="auto, auto">
+            <Label row="0" col="0" text="Litros Totales: " fontWeight="Bold" />
+            <Label row="0" col="1" :text="litros_total_usados" />
+            <Label row="0" col="2" text="/" />
+            <Label row="0" col="3" :text="litros_total_disponible" />
+            <Label row="0" col="4" :text="porcentaje_tanque_usado(litros_total_disponible, litros_total_usados)"/>
         </GridLayout>
-    </Page>
+        <ListView row="2" for="tanque in tanques" @itemTap="onItemTap">
+            <v-template>
+                <GridLayout columns="auto, auto, auto, *, *" rows="auto, *, *">
+                    <Label row="0" col="0" class="tanque_title" :text="tanque.name"></Label>
+                    <Label row="0" col="1" class="h3" :text="porcentaje_tanque_usado(tanque.max_cap, tanque.current_amount)"></Label>
+                    <Button row="0" col="3" horizontalAlignment="right" @tap="onModificarTanqueTap(tanque)">
+                        <FormattedString>
+                            <Span text.decode="&#xf044;" class="fas t-12"></Span>
+                        </FormattedString>
+                    </Button>
+                    <Button row="0" col="4" horizontalAlignment="right" @tap="onDeleteTanqueTap(tanque)">
+                        <FormattedString>
+                            <Span text.decode="&#xf1f8;" class="fas t-12"></Span>
+                        </FormattedString>
+                    </Button>
+                    <!-- <Label row="0" col="4" horizontalAlignment="right" class="far t-12" text.decode="&#xf044;"></Label> -->
+                    <!-- <Image row="0" col="2" horizontalAlignment="right" src.decode="font://&#xf155;" class="far t-36"></Image> -->
+                    <Label row="1" col="0" text="Cantidad Maxima: " fontWeight="Bold" />
+                    <Label row="1" col="1" :text="tanque.max_cap" />
+                    <Label row="2" col="0" text="Cantidad Actual: " fontWeight="Bold" />
+                    <Label row="2" col="1" :text="tanque.current_amount"/>
+                </GridLayout>
+
+            </v-template>
+        </ListView>
+        <StackLayout row="3" orientation="vertical">
+            <Button class="big_button"text=" + Agregar nuevo tanque" @tap="onNewTanqueTap" />
+            <StackLayout class="hr m-10"></StackLayout>
+            <Button class="big_button" text="Crear Carga" @tap="onNewCargaTap" />
+            <Button class="big_button" text="Crear Descarga" @tap="onNewDescargaTap" />
+            <StackLayout class="hr m-10"></StackLayout>
+            <Button class="big_button" text="Generar Reporte" @tap="onGenerateReportTap" />
+        </StackLayout>
+    </GridLayout>
 </template>
 
 <script>
@@ -103,7 +95,7 @@ export default {
     methods: {
         onModificarTanqueTap(tanque){
             console.log(tanque);
-            this.$showModal(ModificarTanque, {
+            this.$navigateTo(ModificarTanque, {
                 transition: {
                     name:'fade',
                     duration: 300

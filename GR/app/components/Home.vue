@@ -1,29 +1,14 @@
 <template lang="html">
-    <BottomNavigation>
-        <TabStrip>
-            <TabStripItem class="navigation__item">
-                <Label text="Tanques"></Label>
-                <Image src.decode="font://&#xf0db;" class="fas t-36"></Image>
-            </TabStripItem>
-            <TabStripItem class="navigation__item">
-                <Label text="Precios"></Label>
-                <Image src.decode="font://&#xf155;" class="fas t-36"></Image>
-            </TabStripItem>
-        </TabStrip>
-
-        <TabContentItem>
-            <Frame>
+    <Page>
+        <TabView>
+            <TabViewItem title="Tanques" iconSource="~/images/tanques.png">
                 <Tanques />
-            </Frame>
-        </TabContentItem>
-
-        <TabContentItem>
-            <Frame>
+            </TabViewItem>
+            <TabViewItem title="Precios" iconSource="~/images/precios.png">
                 <Precios />
-            </Frame>
-        </TabContentItem>
-
-    </BottomNavigation>
+            </TabViewItem>
+        </TabView>
+    </Page>
 </template>
 
 <script>

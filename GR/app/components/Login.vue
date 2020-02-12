@@ -17,15 +17,8 @@
                     <StackLayout row="1" class="input-field">
                         <TextField class="input" ref="password" :isEnabled="!processing"
                             hint="Password" secure="true" v-model="user.password"
-                            :returnKeyType="isLoggingIn ? 'done' : 'next'"
+                            returnKeyType="done"
                             @returnPress="focusConfirmPassword"></TextField>
-                        <StackLayout class="hr-light"></StackLayout>
-                    </StackLayout>
-
-                    <StackLayout row="2" v-show="!isLoggingIn" class="input-field">
-                        <TextField class="input" ref="confirmPassword" :isEnabled="!processing"
-                            hint="Confirm password" secure="true" v-model="user.confirmPassword"
-                            returnKeyType="done"></TextField>
                         <StackLayout class="hr-light"></StackLayout>
                     </StackLayout>
 
@@ -47,7 +40,6 @@
     export default {
         data() {
             return {
-                isLoggingIn: true,
                 processing: false,
                 user: {
                     email: "",
@@ -57,9 +49,6 @@
             };
         },
         methods: {
-            toggleForm() {
-                this.isLoggingIn = !this.isLoggingIn;
-            },
 
             submit() {
                 if (!this.user.email || !this.user.password) {
@@ -70,11 +59,7 @@
                 }
 
                 this.processing = true;
-                if (this.isLoggingIn) {
-                    this.login();
-                } else {
-                    this.register();
-                }
+                this.login();
             },
 
             login() {
@@ -85,6 +70,7 @@
                     .login(this.user.email, this.user.password)
                     .then(() => {
                         console.log("Call resolved");
+                        console.log(this.$backendService.isLoggedIn());
                         vue_ref.processing = false;
                         vue_ref.$navigateTo(routes.home);
 
@@ -100,67 +86,13 @@
                     });
             },
 
-            register() {
-                if (this.user.password != this.user.confirmPassword) {
-                    this.alert("Your passwords do not match.");
-                    this.processing = false;
-                    return;
-                }
-
-                this.$backendService
-                    .register(this.user)
-                    .then(() => {
-                        this.processing = false;
-                        this.alert(
-                            "Your account was successfully created.");
-                        this.isLoggingIn = true;
-                    })
-                    .catch(() => {
-                        this.processing = false;
-                        this.alert(
-                            "Unfortunately we were unable to create your account."
-                        );
-                    });
-            },
-
-            forgotPassword() {
-                prompt({
-                    title: "Forgot Password",
-                    message: "Enter the email address you used to register for APP NAME to reset your password.",
-                    inputType: "email",
-                    defaultText: "",
-                    okButtonText: "Ok",
-                    cancelButtonText: "Cancel"
-                }).then(data => {
-                    if (data.result) {
-                        this.$backendService
-                            .resetPassword(data.text.trim())
-                            .then(() => {
-                                this.alert(
-                                    "Your password was successfully reset. Please check your email for instructions on choosing a new password."
-                                );
-                            })
-                            .catch(() => {
-                                this.alert(
-                                    "Unfortunately, an error occurred resetting your password."
-                                );
-                            });
-                    }
-                });
-            },
-
             focusPassword() {
                 this.$refs.password.nativeView.focus();
-            },
-            focusConfirmPassword() {
-                if (!this.isLoggingIn) {
-                    this.$refs.confirmPassword.nativeView.focus();
-                }
             },
 
             alert(message) {
                 return alert({
-                    title: "APP NAME",
+                    title: "GR",
                     okButtonText: "OK",
                     message: message
                 });

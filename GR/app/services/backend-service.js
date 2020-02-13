@@ -17,11 +17,11 @@ export default class BackendService {
               console.log("\n\n\n\nWAKJNKJKJNDKJNKDJNSKJNFKDJFNDKFJNSDKFJNSDKFJNSDKF");
               if (data.loggedIn) {
                   class_ref.is_user_logged_in = true;
-                  // ApplicationSettings.setBoolean("is_user_logged_in", true);
+                  ApplicationSettings.setBoolean("is_user_logged_in", true);
                   console.log("Logged in to firebase!. User's email address: " + (data.user.email ? data.user.email : "N/A"));
               }else{
                 class_ref.is_user_logged_in = false;
-                // ApplicationSettings.setBoolean("is_user_logged_in", false);
+                ApplicationSettings.setBoolean("is_user_logged_in", false);
                 console.log("Logged out from Firebase")
               }
           }

@@ -242,7 +242,8 @@ export default {
                 total_litros_cargados_from_tanques: this.total_litros_cargados_from_tanques,
                 total_litros_cargados_to_pipas: this.total_litros_cargados_to_pipas,
                 tanques_usados: [],
-                operation_type: this.operation_type
+                operation_type: this.operation_type,
+                timestamp: firebase.ServerValue.TIMESTAMP
             }
 
             this.tanques_disponibles.forEach(function(tanque){

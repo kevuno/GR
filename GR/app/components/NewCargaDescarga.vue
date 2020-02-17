@@ -1,6 +1,5 @@
 <template>
     <Page>
-
         <ActionBar>
             <Label text="Crear Carga a Pipas"></Label>
         </ActionBar>
@@ -56,7 +55,7 @@
                         <Label text="=" v-if="are_amounts_valid" row="1" col="1" class="h21" fontWeight="Bold"></Label>
                         <Label :text="total_litros_cargados_to_pipas" row="1" col="2" class="h1" horizontalAlignment="center" />
                     </GridLayout>
-                    <Button text="Finalizar Crear Carga"  :isEnabled="are_amounts_valid" class="big_button" @tap="onFinishCrearCargaTap" horizontalAlignment="center"/>
+                    <Button :text="content_strings.submit_button_label"  :isEnabled="are_amounts_valid" class="big_button" @tap="onFinishCrearCargaTap" horizontalAlignment="center"/>
             </StackLayout>
         </ScrollView>
     </Page>

@@ -39,7 +39,7 @@
             <Button class="big_button" text="Crear Carga" @tap="onNewCargaTap" />
             <Button class="big_button" text="Crear Descarga" @tap="onNewDescargaTap" />
             <StackLayout class="hr m-10"></StackLayout>
-            <Button class="big_button" text="Generar Reporte" @tap="onGenerateReportTap" />
+            <Button class="big_button" text="Ver Reporte" @tap="onGenerateReportTap" />
         </StackLayout>
     </GridLayout>
 </template>
@@ -47,6 +47,7 @@
 <script>
 import ModificarTanque from './ModificarTanque.vue';
 import NewCargaDescarga from './NewCargaDescarga.vue';
+import Reporte from './Reporte.vue';
 
 import firebase from 'nativescript-plugin-firebase';
 
@@ -198,6 +199,13 @@ export default {
         onGenerateReportTap(){
             // TODO
             console.log("Generar Reporte Tap");
+            this.$navigateTo(Reporte, {
+                transition: {
+                    name:'fade',
+                    duration: 300
+                },
+                props: {}
+            });
         },
 
         /// HELPER METHODS ///

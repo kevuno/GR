@@ -1,6 +1,5 @@
 <template>
     <Page>
-
         <ActionBar>
             <Label text="Modificar Tanques Disponibles"></Label>
         </ActionBar>

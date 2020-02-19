@@ -3,10 +3,10 @@
         <ScrollView orientation="vertical">
             <StackLayout>
                 <Label class="header" :text="content_strings.title" />
-                <GridLayout rows="auto, auto" columns="auto, auto" horizontalAlignment="center">
-                    <Label text="Operador: " row="0" col="0" />
-                    <Label row="0" col="1" hint="Nombre de Operador" :text="operation.operador" />
-                    <Label text="Numero de tracto:" row="1" col="0" />
+                <GridLayout rows="auto, auto" columns="150, 100" horizontalAlignment="center">
+                    <Label row="0" col="0" text="Operador: "  fontWeight="Bold" />
+                    <Label row="0" col="1" :text="operation.operador" />
+                    <Label row="1" col="0" text="Numero de tracto:" fontWeight="Bold" />
                     <Label row="1" col="1" :text="operation.numero_de_tracto" />
                 </GridLayout>
                 <StackLayout class="hr m-10"></StackLayout>
@@ -15,17 +15,15 @@
                         <Label v-if="operation.operation_type == 'carga'" text.decode="&#xf061;" alignSelf="center" height="20" class="fas t-20"></Label>
                         <Label v-else text.decode="&#xf060;" alignSelf="center" height="20" class="fas t-20"></Label>
                     </FlexboxLayout>         
-                    <GridLayout rows="auto, auto" columns="60*, 40*" class="m-20"> <!-- Format for %width of the cells -->
-                        <Label row="0" col="0" class="h3" fontWeight="Bold" :text="content_strings.tanques_secc_label" textWrap="true" />
-                        <Label row="0" col="1" class="h3" fontWeight="Bold" :text="content_strings.pipas_secc_label" textWrap="true" />
+                    <GridLayout rows="auto, auto" columns="50*, 50*" class="m-20"> <!-- Format for %width of the cells -->
+                        <Label row="0" col="0" class="h2"  :text="content_strings.tanques_secc_label" textWrap="true" />
+                        <Label row="0" col="1" class="h2"  :text="content_strings.pipas_secc_label" textWrap="true" />
                         
                         <StackLayout row="1" col="0" orientation="vertical">                   
                             <template v-for="tanque in operation.tanques_usados">                        
                                 <GridLayout rows="auto, auto" columns="auto, auto, *" :key="tanque.id">                            
-                                    <Label row="0" col="0" colSpan="3" :text="tanque.name"  class="tanque_title"  />                            
-                                    <Label row="1" col="0" text="Litros disp. = "  style="font-style: italic;" />                            
-                                    <Label row="1" col="1" :text="tanque.current_amount"  style="font-style: italic;" />
-                                    <Label row="1" col="2" :text="tanque.litros_cargados" :key="tanque.id" fontWeight="Bold"/>
+                                    <Label row="0" col="0" colSpan="3" :text="tanque.name"  class="tanque_title"  />
+                                    <Label row="1" col="0" :text="tanque.litros_cargados" :key="tanque.id" fontWeight="Bold"/>
                                 </GridLayout>
                             </template>
                         </StackLayout>
@@ -37,8 +35,8 @@
                         </StackLayout>
                     </GridLayout>            
                     <StackLayout class="hr m-10"></StackLayout>
-                    <GridLayout rows="auto, auto" columns="57*, 43*" class="m-20">
-                        <Label :text="content_strings.total_tanques_label" row="0" col="0" class="h3" textWrap="true" fontWeight="Bold" textAlignment="left"/>                
+                    <GridLayout rows="auto, auto" columns="50*, 50*" class="m-20">
+                        <Label :text="content_strings.total_tanques_label" row="0" col="0" class="h3" textWrap="true" fontWeight="Bold" />                
                         <Label :text="content_strings.total_pipas_label" row="0" col="2" class="h3" textWrap="true" fontWeight="Bold" textAlignment="right"/>
                         <Label :text="operation.total_litros_cargados_from_tanques" row="1" col="0" class="h1" horizontalAlignment="center" />
                         <Label :text="operation.total_litros_cargados_to_pipas" row="1" col="2" class="h1" horizontalAlignment="center" />

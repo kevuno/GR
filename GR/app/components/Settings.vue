@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import firebase from 'nativescript-plugin-firebase';
 import Login from "./Login.vue";
 export default {
     data: () => {
@@ -14,7 +13,7 @@ export default {
         onLogOutTap(){
             console.log("Logging out...");
             var vue_ref = this;
-            firebase.logout().then(function(data){
+            this.$backendService.logout().then(function(data){
                 console.log("Logout Successful" + data);
                 vue_ref.$navigateTo(Login);
             }).catch(function(error){

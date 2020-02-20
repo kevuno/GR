@@ -69,7 +69,6 @@ export default class BackendService {
         try {
             const result = await firebase.logout();
             this.is_user_logged_in = false;
-            console.log(result);
             return result;
         }
         catch (error) {

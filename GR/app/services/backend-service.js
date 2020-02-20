@@ -48,8 +48,6 @@ export default class BackendService {
     }
 
     async login(email, password) {
-        // TODO
-        // return Kinvey.User.login(user.email, user.password);
         try {
             const result = await firebase.login({
                 type: firebase.LoginType.PASSWORD,
@@ -67,13 +65,15 @@ export default class BackendService {
         }
     }
 
-    logout() {
-        // TODO
-        // return Kinvey.User.logout();
-    }
-
-    register(user) {
-        // TODO
-        // return Kinvey.User.signup({ username: user.email, password: user.password });
+    async logout() {
+        try {
+            const result = await firebase.logout();
+            this.is_user_logged_in = false;
+            console.log(result);
+            return result;
+        }
+        catch (error) {
+            throw error;
+        }
     }
 }

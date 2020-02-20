@@ -63,14 +63,14 @@
             },
 
             login() {
-                this.$navigateTo(routes.home);
                 var vue_ref = this;
 
                 this.$backendService
                     .login(this.user.email, this.user.password)
                     .then(() => {
                         console.log("Call resolved");
-                        console.log(this.$backendService.isLoggedIn());
+                        console.log("Call 2");
+                        console.log("Call 3");
                         vue_ref.processing = false;
                         vue_ref.$navigateTo(routes.home);
 

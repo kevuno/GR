@@ -27,8 +27,6 @@
 
                 <Button text="Iniciar Sesión" :isEnabled="!processing"
                     @tap="submit" class="btn btn-primary m-t-20"></Button>
-                <Label text="Olvido su contraseña?"
-                    class="login-label" @tap="forgotPassword()"></Label>
             </StackLayout>
         </FlexboxLayout>
     </Page>

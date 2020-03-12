@@ -1,5 +1,8 @@
 <template lang="html">
     <Page>
+        <ActionBar title="Inicio">
+           <NavigationButton visibility="hidden" ></NavigationButton>
+       </ActionBar>
         <TabView>
             <TabViewItem title="Tanques" iconSource="~/images/tanques.png">
                 <Tanques />

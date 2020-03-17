@@ -10,8 +10,8 @@
                 <TextField row="0" col="1" class="h3" v-model="fixed_costs.dollar_to_pesos_rate" />
                 <Label row="1" col="0" text="Costo de 1 Galon de Gasolina (USD): " class="h3" fontWeight="Bold" />
                 <TextField row="1" col="1" class="h3" v-model="fixed_costs.gallon_price_in_dollars" keyboardType="number" />
-                <Label row="2" col="0" text="Costo de la aduana por litro (USD) " class="h3" fontWeight="Bold" />
-                <TextField row="2" col="1" class="h3" v-model="fixed_costs.aduana_cost_in_dollars" keyboardType="number"/>
+                <Label row="2" col="0" text="Costo de la aduana por litro (MXN) " class="h3" fontWeight="Bold" />
+                <TextField row="2" col="1" class="h3" v-model="fixed_costs.aduana_cost_in_pesos" keyboardType="number"/>
                 <Label row="3" col="0" text="Utilidad por Litro deseada (MXN)" class="h3" fontWeight="Bold" />
                 <TextField row="3" col="1" class="h3" v-model="fixed_costs.utility_per_liter_in_pesos" keyboardType="number"/>
             </GridLayout>

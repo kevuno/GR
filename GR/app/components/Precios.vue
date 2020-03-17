@@ -1,44 +1,48 @@
 <template>
-    <GridLayout rows="auto, auto, auto, auto *">
+    <GridLayout rows="auto, auto, auto, auto, auto, *">
         <Label row="0" class="header" text="Precios Fijos" />
-        <GridLayout row="1" columns="auto, *, auto" rows="auto, auto" horizontalAlignment="center" >
-            <!-- First Row -->
-            <GridLayout row="0" col="0" columns="*, *">
-                <Label row="0" col="0" text="USD -> MXN " fontWeight="Bold"/>
-                <Label row="0" col="1" :text="'$' + fixed_costs.dollar_to_pesos_rate"></Label>
-            </GridLayout>
-            <Label row="0" col="1" text=" " textWrap="true" />
+        <!-- First Row -->
+        <GridLayout row="1" col="0" class="sub_header" columns="auto, auto" horizontalAlignment="center">
+            <Label row="0" col="0" text="USD -> MXN " fontWeight="Bold"/>
+            <Label row="0" col="1" :text="'$' + fixed_costs.dollar_to_pesos_rate"></Label>
+        </GridLayout>
+        <GridLayout row="2" columns="auto, auto" rows="auto, auto, auto" horizontalAlignment="center" >
             
-            <GridLayout row="0" col="2" columns="*, *" style="margin-left: 5px">
+            <!-- Second Row -->
+            <GridLayout row="1" col="0" columns="*, *" style="margin-left: 5px">
                 <Label row="0" col="0" text="Precio del Galon (USD) " fontWeight="Bold"></Label>
                 <Label row="0" col="1" :text="'$' + fixed_costs.gallon_price_in_dollars"></Label>
             </GridLayout>
-        
-            <!-- Second Row -->
-            <GridLayout row="1" col="0" columns="*, *">
-                <Label row="0" col="0" text="Coto de la Aduana (USD) " fontWeight="Bold"/>
-                <Label row="0" col="1" :text="'$' + fixed_costs.aduana_cost_in_dollars"></Label>
+            
+            <GridLayout row="1" col="1" columns="*, *" style="margin-left: 5px">
+                <Label row="0" col="0" text="Precio del Litro (MXN) " fontWeight="Bold"></Label>
+                <Label row="0" col="1" :text="'$' + liter_price_in_pesos"></Label>
             </GridLayout>
-            <Label row="0" col="1" text=" " textWrap="true" />
-            <GridLayout row="1" col="2" columns="*, *" style="margin-left: 5px">
+        
+            <!-- Third Row -->
+            <GridLayout row="2" col="0" columns="*, *">
+                <Label row="0" col="0" text="Coto de la Aduana (MXN) " fontWeight="Bold"/>
+                <Label row="0" col="1" :text="'$' + fixed_costs.aduana_cost_in_pesos"></Label>
+            </GridLayout>
+            <GridLayout row="2" col="1" columns="*, *" style="margin-left: 5px">
                 <Label row="0" col="0" text="Utilidad por Litro (MXN) " fontWeight="Bold"></Label>
                 <Label row="0" col="1" :text="'+ $' + fixed_costs.utility_per_liter_in_pesos"></Label>
             </GridLayout>
         </GridLayout>
-        <Button row="2" class="big_button" text="Editar Precios Fijos" @tap="onEditFixedPricesTap" />
-        <Label row="3" class="header" text="Precios por Estado" />
-        <ListView row="4" for="estado in estados" @itemTap="onEstadoItemTap">
+        <Button row="3" class="big_button" text="Editar Precios Fijos" @tap="onEditFixedPricesTap" />
+        <Label row="4" class="header" text="Precios por Estado" />
+        <ListView row="5" for="estado in estados" @itemTap="onEstadoItemTap">
             <v-template>
-                <GridLayout columns="70*, 15*, 15*" rows="auto, auto">
-                    <Label row="0" col="0" :text="estado.name" />
-                    <Label row="0" col="1" :text="'$' + estado.liter_price"></Label>
+                <GridLayout columns="50*, 35*, 15*" rows="auto, auto">
+                    <Label row="0" col="0" class="tanque_title" :text="estado.name" />
+                    <Label row="0" col="1" class="price_title" :text="'$' + computeLiterPrice(estado)"></Label>
                     <Button row="0" col="2" horizontalAlignment="right" @tap="onEditEstadoPrecioTap(estado)">
                         <FormattedString>
                             <Span text.decode="&#xf044;" class="fas t-12"></Span>
                         </FormattedString>
                     </Button>
-                    <Label row="1" col="0" :text="'$' + estado.flete"></Label>
-                    <Label row="1" col="1" :text="'$' + estado.costo_variable"></Label>
+                    <Label row="1" col="0" :text="'Flete: $' + estado.flete"></Label>
+                    <Label row="1" col="1" :text="'Cost. Var: $' + estado.costo_variable"></Label>
                 </GridLayout>
             </v-template>
         </ListView>
@@ -59,7 +63,7 @@ export default {
             fixed_costs :{
                 dollar_to_pesos_rate: 19.50,
                 gallon_price_in_dollars: 2.3,
-                aduana_cost_in_dollars: 4.3,
+                aduana_cost_in_pesos: 4.3,
                 utility_per_liter_in_pesos: 3.0
             },
             estados: [{
@@ -86,27 +90,26 @@ export default {
         }
     },
     mounted: function () {
-        // console.log("Reading operaciones from DB");
-        // firebase.getValue('/operations')
-        //     .then(result => {
-        //         // Save each tanque obj into the array of tanques
-        //         let operations_list_obj = result.value;
-        //         for(var operation_key in operations_list_obj) {
-        //             if(operations_list_obj.hasOwnProperty(operation_key)) {
-        //                 // Save tanque obj into Vue list of tanques
-        //                 let operation_obj = operations_list_obj[operation_key];
-        //                 operation_obj.id = operation_key; // Add ID property for easy queryings
-        //                 this.operations.push(operation_obj);
-        //             }
-        //         }
-                
-        //     })
-        //     .catch(error => console.log("Error: " + error));
+        console.log("Reading estados from DB");
     },
     computed: {
+        // Convert price of gallon in dol lars to liters in pesos
+        liter_price_in_pesos(){
+            let precio = (parseFloat(this.fixed_costs.gallon_price_in_dollars) * parseFloat(this.fixed_costs.dollar_to_pesos_rate)) / 3.78541 // galons in a liter
+            return precio.toFixed(3);
+
+            
+        },
+
         
     },
     methods: {
+        computeLiterPrice(estado){
+            let fixed_costs_sum = parseFloat(this.liter_price_in_pesos) + parseFloat(this.fixed_costs.aduana_cost_in_pesos);
+            let variable_costs_sum = parseFloat(estado.flete) + parseFloat(estado.costo_variable);
+            return (fixed_costs_sum + variable_costs_sum + parseFloat(this.fixed_costs.utility_per_liter_in_pesos)).toFixed(3);
+
+        },
         onEstadoItemTap(estado){
             console.log("Tapped on estado: " + estado);
             console.dir(estado.item);

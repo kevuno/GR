@@ -1,0 +1,48 @@
+<template>
+    <Page>
+        <ActionBar>
+            <Label text="Modificar Costos Estado"></Label>
+        </ActionBar>
+        <StackLayout rows="auto, auto">
+            <Label class="header" text="Modificar Costos del Estado" />
+            <GridLayout horizontalAlignment="center" columns="auto, auto" rows="auto, auto, auto, auto">
+                <Label row="0" col="0" text="Flete: " class="h3"  fontWeight="Bold" />
+                <TextField row="0" col="1" class="h3" v-model="estado.flete" @textChange="onEstadoFleteChanged"/>
+                <Label row="1" col="0" text="Costo Variable: " class="h3" fontWeight="Bold" />
+                <TextField row="1" col="1" class="h3" v-model="estado.costo_variable" keyboardType="number" @textChange="onEstadoCostoVariableChanged"/>
+            </GridLayout>
+        </StackLayout>
+    </Page>
+</template>
+
+<script>
+import firebase from 'nativescript-plugin-firebase';
+
+export default {
+    props: ["context"],
+    computed: {
+        estado() {
+            return this.context || {};
+        },
+    },
+    methods:{
+        onEstadoFleteChanged(){
+            console.log("Text changed on flete");
+            
+        },
+        onEstadoCostoVariableChanged(){
+            console.log("Text changed Costo variable");
+        },
+
+    }
+};
+</script>
+
+<style scoped lang="scss">
+// Start custom common variables
+@import "~@nativescript/theme/scss/variables/blue";
+// End custom common variables
+
+// Custom styles
+
+</style>

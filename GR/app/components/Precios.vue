@@ -60,20 +60,26 @@ export default {
 
     data: () => {
         return {
-            fixed_costs :{
-                dollar_to_pesos_rate: 19.50,
-                gallon_price_in_dollars: 2.3,
-                aduana_cost_in_pesos: 4.3,
-                utility_per_liter_in_pesos: 3.0
-            },
+            fixed_costs: {},
             estados: []
         }
     },
     mounted: function () {
+        // Get list of fixed costs
+        console.log("Reading fixed_costs from DB");
+        firebase.getValue('/precios_fijos')
+            .then(result => {
+                console.dir(result.value);
+                this.fixed_costs = result.value;
+                
+            })
+            .catch(error => console.log("Error: " + error));
+
+        // Get list of precies from each estado
         console.log("Reading estados from DB");
         firebase.getValue('/estados')
             .then(result => {
-                // Save each tanque obj into the array of tanques
+                // Save each estado obj into the array of estados
                 console.dir(result.value);
                 this.estados = result.value;
                 
@@ -84,9 +90,7 @@ export default {
         // Convert price of gallon in dol lars to liters in pesos
         liter_price_in_pesos(){
             let precio = (parseFloat(this.fixed_costs.gallon_price_in_dollars) * parseFloat(this.fixed_costs.dollar_to_pesos_rate)) / 3.78541 // galons in a liter
-            return precio.toFixed(3);
-
-            
+            return precio.toFixed(3);            
         },
 
         
@@ -104,7 +108,6 @@ export default {
         },
 
         onEditEstadoPrecioTap(estado){
-            console.log(estado.item);
             this.$navigateTo(EditEstado, {
                 transition: {
                     name:'fade',

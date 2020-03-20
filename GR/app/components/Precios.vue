@@ -66,31 +66,19 @@ export default {
                 aduana_cost_in_pesos: 4.3,
                 utility_per_liter_in_pesos: 3.0
             },
-            estados: [{
-                name: "Baja California Norte",
-                liter_price: 20.24,
-                flete: 1.5,
-                costo_variable: 5.3,
-            },{
-                name: "Baja California Sur",
-                liter_price: 18.90,
-                flete: 0.5,
-                costo_variable: 8.3,
-            },{
-                name: "Puebla",
-                liter_price: 22.14,
-                flete: 1.2,
-                costo_variable: 2.3,
-            },{
-                name: "Estado de Mexico",
-                liter_price: 21.43,
-                flete: 1.8,
-                costo_variable: 1.3,
-            },]
+            estados: []
         }
     },
     mounted: function () {
         console.log("Reading estados from DB");
+        firebase.getValue('/estados')
+            .then(result => {
+                // Save each tanque obj into the array of tanques
+                console.dir(result.value);
+                this.estados = result.value;
+                
+            })
+            .catch(error => console.log("Error: " + error));
     },
     computed: {
         // Convert price of gallon in dol lars to liters in pesos

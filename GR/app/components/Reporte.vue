@@ -44,6 +44,7 @@ export default {
                         this.operations.push(operation_obj);
                     }
                 }
+                this.operations = this.operations.sort((a, b) => b.timestamp - a.timestamp)
                 
             })
             .catch(error => console.log("Error: " + error));

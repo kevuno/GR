@@ -63,9 +63,14 @@
 
 <script>
 import firebase from 'nativescript-plugin-firebase';
+import AndroidBackButton from "./AndroidBackButton.vue";
 
 export default {
     props: ["context"],
+
+    components: {
+        AndroidBackButton
+    },
 
     data: () => {
         return {

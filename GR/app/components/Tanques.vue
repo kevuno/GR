@@ -96,6 +96,7 @@ export default {
     methods: {
         onModificarTanqueTap(tanque){
             console.log(tanque);
+            this.$backendService.setPreventBackNavigation(false);
             this.$navigateTo(ModificarTanque, {
                 transition: {
                     name:'fade',
@@ -160,7 +161,8 @@ export default {
                 element.litros_cargados = 0;
             });
 
-            this.$showModal(NewCargaDescarga, {
+            this.$backendService.setPreventBackNavigation(false);
+            this.$navigateTo(NewCargaDescarga, {
                 transition: {
                     name:'fade',
                     duration: 300
@@ -183,7 +185,8 @@ export default {
                 element.litros_cargados = 0;
             });
 
-            this.$showModal(NewCargaDescarga, {
+            this.$backendService.setPreventBackNavigation(false);
+            this.$navigateTo(NewCargaDescarga, {
                 transition: {
                     name:'fade',
                     duration: 300
@@ -199,6 +202,7 @@ export default {
         onGenerateReportTap(){
             // TODO
             console.log("Generar Reporte Tap");
+            this.$backendService.setPreventBackNavigation(false);
             this.$navigateTo(Reporte, {
                 transition: {
                     name:'fade',

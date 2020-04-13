@@ -7,11 +7,12 @@ export default class BackendService {
 
     constructor(){
       this.is_user_logged_in = false;
+      this.prevent_back_navigation = false;
     }
 
 
     initFirebase(){
-        var class_ref = this;      
+        var class_ref = this;
         firebase.init({
           onAuthStateChanged: function(data) { // optional but useful to immediately re-logon the user when they re-visit your app
               console.log("\n\n\n\nWAKJNKJKJNDKJNKDJNSKJNFKDJFNDKFJNSDKFJNSDKFJNSDKF");
@@ -74,5 +75,15 @@ export default class BackendService {
         catch (error) {
             throw error;
         }
+    }
+
+    setPreventBackNavigation(boolValue){
+        console.log("Setting value of prevention is: " + boolValue);
+        this.prevent_back_navigation = boolValue;
+    }
+
+    getPreventBackNavigation(){
+        console.log("Getting value of prevention is: " + this.prevent_back_navigation);
+        return this.prevent_back_navigation;
     }
 }

@@ -37,22 +37,23 @@ export default {
     },
     mounted: function () {
         console.log("Home loaded");
-        this.$backendService.setPreventBackNavigation(true);
-        application.android.on(application.AndroidApplication.activityBackPressedEvent, (args) => {
-            if(this.$backendService.getPreventBackNavigation()){
-                args.cancel = true; // prevents default back button behavior
-            }
-        });
+
+        // If platform is Andorid, prevent the click of the back button
+        // In iOS, the button should be dissabled thanks to <NavigationButton visibility="hidden" ...>
+        if(application.android){
+            this.$backendService.setPreventBackNavigation(true);
+            application.android.on(application.AndroidApplication.activityBackPressedEvent, (args) => {
+                if(this.$backendService.getPreventBackNavigation()){
+                    args.cancel = true; // prevents default back button behavior
+                }
+            });
+        }
+        
     },
     methods: {
         pageLoaded(){
             this.$backendService.setPreventBackNavigation(true);
         }
-        // onUpdatePreventBack(newValue){
-        //     console.log("Back button prevention value changed from child");
-        //     this.prevent = newValue;
-
-        // }
     }
 };
 

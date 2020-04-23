@@ -108,6 +108,7 @@ export default {
         },
 
         onEditEstadoPrecioTap(estado){
+            this.$backendService.setPreventBackNavigation(false);
             this.$navigateTo(EditEstado, {
                 transition: {
                     name:'fade',
@@ -122,6 +123,7 @@ export default {
         onEditFixedPricesTap(){
             console.log("Pressed Edit Fixed Prices button");
             var fixed_costs = this.fixed_costs
+            this.$backendService.setPreventBackNavigation(false);
             this.$navigateTo(EditFixedCosts, {
                 transition: {
                     name:'fade',

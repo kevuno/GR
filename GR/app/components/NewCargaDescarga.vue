@@ -15,8 +15,8 @@
                 <StackLayout class="hr m-10"></StackLayout>
                     <FlexboxLayout flexDirection="column">
                         <!-- Right arrow icon if operation type is carga, otherwise the arrow points left -->
-                        <Label v-if="operation_type == 'carga'" text.decode="&#xf061;" alignSelf="center" height="20" class="fas t-20"></Label>
-                        <Label v-else text.decode="&#xf060;" alignSelf="center" height="20" class="fas t-20"></Label>
+                        <Label v-if="operation_type == 'carga'" text.decode="&#xf061;" alignSelf="center" height="40" class="fas t-20"></Label>
+                        <Label v-else text.decode="&#xf060;" alignSelf="center" height="40" class="fas t-20"></Label>
                     </FlexboxLayout>         
                     <GridLayout rows="auto, auto" columns="60*, 40*" class="m-20"> <!-- Format for %width of the cells -->
                         <Label row="0" col="0" class="h3" fontWeight="Bold" :text="content_strings.tanques_secc_label" textWrap="true" />

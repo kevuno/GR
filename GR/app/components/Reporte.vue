@@ -56,7 +56,7 @@ export default {
         onOperationItemTap(operation){
             console.log("Tapped on operation: " + operation);
             console.dir(operation.item);
-            this.$showModal(OperationDetails, {
+            this.$navigateTo(OperationDetails, {
                 transition: {
                     name:'fade',
                     duration: 300

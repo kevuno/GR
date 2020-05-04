@@ -52,7 +52,7 @@
                         <!-- Second row has a little checkmark if the amounts in the inputs are valid, a cross otherwise -->
                         <Label text.decode="&#xf00c;" v-if="are_amounts_valid" row="1" col="1" class="fas t-14"></Label>
                         <Label text.decode="&#xf00d;" v-else row="1" col="1" class="fas t-14"></Label>
-                        
+
                         <!-- Third row has the total values -->
                         <Label :text="total_litros_cargados_from_tanques" row="2" col="0" class="h1" horizontalAlignment="center" />
                         <Label text="=" v-if="are_amounts_valid" row="2" col="1" class="h21" fontWeight="Bold"></Label>
@@ -66,14 +66,9 @@
 
 <script>
 import firebase from 'nativescript-plugin-firebase';
-import AndroidBackButton from "./AndroidBackButton.vue";
 
 export default {
     props: ["context"],
-
-    components: {
-        AndroidBackButton
-    },
 
     data: () => {
         return {

@@ -11,11 +11,10 @@ export default class BackendService {
     }
 
 
-    initFirebase(){
+    async initFirebase(){
         var class_ref = this;
         firebase.init({
           onAuthStateChanged: function(data) { // optional but useful to immediately re-logon the user when they re-visit your app
-              console.log("\n\n\n\nWAKJNKJKJNDKJNKDJNSKJNFKDJFNDKFJNSDKFJNSDKFJNSDKF");
               if (data.loggedIn) {
                   class_ref.is_user_logged_in = true;
                   ApplicationSettings.setBoolean("is_user_logged_in", true);
@@ -34,7 +33,6 @@ export default class BackendService {
               console.log("firebase.init error: " + error);
             }
         );
-    
     }
 
     setUserLoggedIn(){
@@ -45,7 +43,7 @@ export default class BackendService {
         let logged_in_local = ApplicationSettings.getBoolean("is_user_logged_in");
         console.log("Local logged in:" + logged_in_local);
         console.log("Class logged in:" + this.is_user_logged_in);
-        return this.is_user_logged_in;
+        return this.is_user_logged_in || logged_in_local;
     }
 
     async login(email, password) {

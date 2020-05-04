@@ -49,6 +49,8 @@ import Reporte from './Reporte.vue';
 
 import firebase from 'nativescript-plugin-firebase';
 
+var application = require('application');
+
 export default {
     data: () => {
         return {
@@ -77,20 +79,20 @@ export default {
         firebase.getValue('/tanques')
             .then(result => {
                 // Save each tanque obj into the array of tanques
+                var tanques_result = [];
                 let tanques_list_obj = result.value;
                 for(var tanque_key in tanques_list_obj) {
                     if(tanques_list_obj.hasOwnProperty(tanque_key)) {
                         // Save tanque obj into Vue list of tanques
                         let tanque_obj = tanques_list_obj[tanque_key];
                         tanque_obj.id = tanque_key; // Add ID property for easy queryings
-                        this.tanques.push(tanque_obj);
+                        tanques_result.push(tanque_obj);
                     }
                 }
-
-                this.tanques = this.tanques.sort(this.compareTanqueByName);
+                this.tanques = tanques_result.sort(this.compareTanqueByName);
                 
             })
-            .catch(error => console.log("Error: " + error));
+            .catch(error => console.log("Error loading tanques: " + error));
     },
     methods: {
         onModificarTanqueTap(tanque){

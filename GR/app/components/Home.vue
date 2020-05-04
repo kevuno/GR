@@ -2,7 +2,6 @@
     <Page @loaded="pageLoaded">
         <ActionBar title="Inicio">
            <NavigationButton visibility="hidden" @tap="onBackButton"></NavigationButton>
-           <!-- <AndroidBackButton :prevent="prevent_back_button" @updatePrevent"onUpdatePreventBack" @tap="onBackButton" /> -->
        </ActionBar>
         <TabView androidTabsPosition="bottom">
             <TabViewItem title="Tanques" iconSource="~/images/tanques.png">
@@ -52,6 +51,7 @@ export default {
     },
     methods: {
         pageLoaded(){
+            console.log("Page loaded");
             this.$backendService.setPreventBackNavigation(true);
         }
     }

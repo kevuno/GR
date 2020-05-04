@@ -1,7 +1,7 @@
 <template lang="html">
     <GridLayout rows="auto, auto, *, auto">
         <Label row="0" class="header" text="Tanques activos" />
-        <GridLayout horizontalAlignment="center" class="h2" row="1" columns="*, auto, auto, auto, auto" rows="auto, auto">
+        <GridLayout horizontalAlignment="center" class="h3" row="1" columns="*, auto, auto, auto, auto" rows="auto, auto">
             <Label row="0" col="0" text="Litros Totales: " fontWeight="Bold" />
             <Label row="0" col="1" :text="litros_total_usados" />
             <Label row="0" col="2" text="/" />
@@ -33,14 +33,12 @@
 
             </v-template>
         </ListView>
-        <StackLayout row="3" orientation="vertical">
-            <Button class="big_button"text=" + Agregar nuevo tanque" @tap="onNewTanqueTap" />
-            <StackLayout class="hr m-10"></StackLayout>
-            <Button class="big_button" text="Crear Carga" @tap="onNewCargaTap" />
-            <Button class="big_button" text="Crear Descarga" @tap="onNewDescargaTap" />
-            <StackLayout class="hr m-10"></StackLayout>
-            <Button class="big_button" text="Ver Reporte" @tap="onGenerateReportTap" />
-        </StackLayout>
+        <GridLayout horizontalAlignment="center" row="3" rows="auto, auto, auto" columns="auto, auto">
+            <Button row="0" colSpan="2" class="menu_item"text=" + Agregar nuevo tanque" @tap="onNewTanqueTap" />
+            <Button row="1" col="0" class="menu_item" text="Crear Carga (-)" @tap="onNewCargaTap" />
+            <Button row="1" col="1" class="menu_item" text="Crear Descarga (+)" @tap="onNewDescargaTap" />
+            <Button row="2" colSpan="2"  class="menu_item" text="Ver Reporte" @tap="onGenerateReportTap" />
+        </GridLayout>
     </GridLayout>
 </template>
 

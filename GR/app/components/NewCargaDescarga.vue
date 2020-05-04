@@ -1,7 +1,7 @@
 <template>
     <Page>
         <ActionBar>
-            <Label text="Crear Carga a Pipas"></Label>
+            <Label text="Nueva Operacion"></Label>
         </ActionBar>
         <ScrollView orientation="vertical">
             <StackLayout>
@@ -193,8 +193,14 @@ export default {
             }, 0);
 
             const confirmation_str = `Esta seguro de que quiere continuar? \n Resumen: \n\n Tanques utilizados: ${number_of_tanks_used}.\n Pipas cargadas utilizadas: ${number_of_tanks_used}.`
+            let confirm_obj_strs = {
+                title: "Confirmar operacion",
+                message: confirmation_str,
+                okButtonText: "OK",
+                cancelButtonText: "Cancelar"
+            }
             // Confirm:
-            confirm(confirmation_str).then(result => {
+            confirm(confirm_obj_strs).then(result => {
                 if(result){
                     console.log(result);
                     // Save all necessary info form the transaction in DB

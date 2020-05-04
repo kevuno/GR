@@ -86,9 +86,10 @@ export default {
                         let tanque_obj = tanques_list_obj[tanque_key];
                         tanque_obj.id = tanque_key; // Add ID property for easy queryings
                         this.tanques.push(tanque_obj);
-                        //do something with value;
                     }
                 }
+
+                this.tanques = this.tanques.sort(this.compareTanqueByName);
                 
             })
             .catch(error => console.log("Error: " + error));
@@ -226,6 +227,20 @@ export default {
         porcentaje_tanque_usado(total, actual) {
             return "(" + this.porcentaje_tanque_usado_cantidad(total, actual) + "%)";
         },
+
+        compareTanqueByName(tanqueA, tanqueB) {
+            // Use toUpperCase() to ignore character casing
+            const a = tanqueA.name.toUpperCase();
+            const b = tanqueB.name.toUpperCase();
+
+            let comparison = 0;
+            if (a > b) {
+                comparison = 1;
+            } else if (a < b) {
+                comparison = -1;
+            }
+            return comparison;
+        }
     }
 }
 

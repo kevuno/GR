@@ -66,25 +66,20 @@ export default {
     },
     mounted: function () {
         // Get list of fixed costs
-        console.log("Reading fixed_costs from DB");
-        firebase.getValue('/precios_fijos')
-            .then(result => {
-                console.dir(result.value);
-                this.fixed_costs = result.value;
-                
-            })
-            .catch(error => console.log("Error: " + error));
+        this.$backendService.readPreciosEstados().then(estados_result => { 
+            this.estados = estados_result;
+        }).catch(error => {
+            console.log("Error calling backend service for loading tanques: " + error);
+        });
 
-        // Get list of precies from each estado
-        console.log("Reading estados from DB");
-        firebase.getValue('/estados')
-            .then(result => {
-                // Save each estado obj into the array of estados
-                console.dir(result.value);
-                this.estados = result.value;
-                
-            })
-            .catch(error => console.log("Error: " + error));
+        // Get list of fixed costs
+        this.$backendService.readFixedCosts().then(fixed_costs_result => { 
+            this.fixed_costs = fixed_costs_result;
+        }).catch(error => {
+            console.log("Error calling backend service for loading tanques: " + error);
+        });
+
+        
     },
     computed: {
         // Convert price of gallon in dol lars to liters in pesos

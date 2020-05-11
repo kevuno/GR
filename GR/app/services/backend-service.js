@@ -111,12 +111,43 @@ export default class BackendService {
         
     }
 
-    async readPreciosEstados(){
-        
+    async readPreciosEstados(reload_tries=0){
+        // Get list of precies from each estado
+        console.log("Reading estados from DB");
+        return new Promise((resolve, reject) => {
+            firebase.getValue('/estados')
+            .then(result => {
+                // DONE resolve/return final array of estados
+                resolve(result.value);
+                
+            })
+            .catch(error => {
+                console.log("Error loading precios estados: " + error);
+                this.firebaseErrorRetryHandling(this.readPreciosEstados, reload_tries)
+                    .then(result => resolve(result)) // Pass the result to parent call
+                    .catch(error => reject(error)); // Pass the error to parent call
+                
+            });
+        });
     }
 
-    async readPreciosFijos(){
-        
+    async readFixedCosts(reload_tries=0){
+        console.log("Reading fixed_costs from DB");
+        return new Promise((resolve, reject) => {
+            firebase.getValue('/precios_fijos')
+            .then(result => {
+                // DONE resolve/return value of the fixed costs object
+                resolve(result.value);
+                
+            })
+            .catch(error => {
+                console.log("Error loading fixed costs: " + error);
+                this.firebaseErrorRetryHandling(this.readFixedCosts, reload_tries)
+                    .then(result => resolve(result)) // Pass the result to parent call
+                    .catch(error => reject(error)); // Pass the error to parent call
+                
+            });
+        });
     }
 
     async firebaseErrorRetryHandling(reload_function_async, reload_tries){

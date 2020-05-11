@@ -75,36 +75,13 @@ export default {
         },
     },
     mounted: function () {
-        this.readAndListenDB();
+        this.$backendService.readTanques().then(tanques_result =>{ 
+            this.tanques = tanques_result;
+        }).catch(error => {
+            console.log("Error calling backend service for loading tanques: " + error);
+        });
     },
     methods: {
-        readAndListenDB(){
-            console.log("Reading tanques from DB");
-            var vue_ref = this;
-            firebase.getValue('/tanques')
-                .then(result => {
-                    // Save each tanque obj into the array of tanques
-                    var tanques_result = [];
-                    let tanques_list_obj = result.value;
-                    for(var tanque_key in tanques_list_obj) {
-                        if(tanques_list_obj.hasOwnProperty(tanque_key)) {
-                            // Save tanque obj into Vue list of tanques
-                            let tanque_obj = tanques_list_obj[tanque_key];
-                            tanque_obj.id = tanque_key; // Add ID property for easy queryings
-                            tanques_result.push(tanque_obj);
-                        }
-                    }
-                    this.tanques = tanques_result.sort(this.compareTanqueByName);
-                    
-                })
-                .catch(error => {
-                    console.log("Error loading tanques: " + error);
-                    console.log("Retrying...");
-                    setTimeout(() => {
-                        vue_ref.readAndListenDB();
-                    }, 1000);
-                });
-        },
         onModificarTanqueTap(tanque){
             console.log(tanque);
             this.$backendService.setPreventBackNavigation(false);
@@ -236,20 +213,6 @@ export default {
 
         porcentaje_tanque_usado(total, actual) {
             return "(" + this.porcentaje_tanque_usado_cantidad(total, actual) + "%)";
-        },
-
-        compareTanqueByName(tanqueA, tanqueB) {
-            // Use toUpperCase() to ignore character casing
-            const a = tanqueA.name.toUpperCase();
-            const b = tanqueB.name.toUpperCase();
-
-            let comparison = 0;
-            if (a > b) {
-                comparison = 1;
-            } else if (a < b) {
-                comparison = -1;
-            }
-            return comparison;
         },
     }
 }

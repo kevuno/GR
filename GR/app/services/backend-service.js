@@ -6,8 +6,10 @@ import * as ApplicationSettings from "application-settings";
 export default class BackendService {
 
     constructor(){
-      this.is_user_logged_in = false;
-      this.prevent_back_navigation = false;
+        this.is_user_logged_in = false;
+        this.prevent_back_navigation = false;
+        this.firebase_listeners = [];
+        this.MAX_RELOAD_TRIES = 10;
     }
 
 
@@ -75,6 +77,68 @@ export default class BackendService {
         }
     }
 
+    /** ======= Data Readers (TODO turn into Listeners) ========= */
+    /** (Right now data is only loaded once and it doesn't update the other apps unless it hard reloads)  */
+
+    async readTanques(reload_tries=0){
+        console.log("Reading tanques from DB");
+        return new Promise((resolve, reject) => {
+            firebase.getValue('/tanques')
+                .then(result => {
+                    // Save each tanque obj into the array of tanques
+                    var tanques_result = [];
+                    let tanques_list_obj = result.value;
+                    for(var tanque_key in tanques_list_obj) {
+                        if(tanques_list_obj.hasOwnProperty(tanque_key)) {
+                            // Save tanque obj into Vue list of tanques
+                            let tanque_obj = tanques_list_obj[tanque_key];
+                            tanque_obj.id = tanque_key; // Add ID property for easy queryings
+                            tanques_result.push(tanque_obj);
+                        }
+                    }
+
+                    // DONE resolve/return final list of tanques
+                    resolve(tanques_result.sort(BackendService.compareTanqueByName));
+                })
+                .catch(error => {
+                    console.log("Error loading tanques: " + error);
+                    this.firebaseErrorRetryHandling(this.readTanques, reload_tries)
+                        .then(result => resolve(result)) // Pass the result to parent call
+                        .catch(error => reject(error)); // Pass the error to parent call
+                    
+                });
+        })
+        
+    }
+
+    async readPreciosEstados(){
+        
+    }
+
+    async readPreciosFijos(){
+        
+    }
+
+    async firebaseErrorRetryHandling(reload_function_async, reload_tries){
+        return new Promise((resolve, reject) => {
+        
+            if(reload_tries < this.MAX_RELOAD_TRIES){
+                console.log(`Retrying...(${reload_tries})`);
+                setTimeout(() => {
+                    // Recurse after waiting 1 second and try again
+                    reload_function_async(reload_tries + 1)
+                        .then(result => resolve(result)) // Pass the result to parent call
+                        .catch(error => reject(error)); // Pass the error to parent call
+                }, 1000);
+            }else{
+                reject(`Max reload tries achieved at  ${reload_tries} total tries`);
+            }
+        });
+    }
+
+
+    /** ========== BACK NAVIGATION VALUE SET/GET ============= */
+
     setPreventBackNavigation(boolValue){
         console.log("Setting value of prevention is: " + boolValue);
         this.prevent_back_navigation = boolValue;
@@ -83,5 +147,20 @@ export default class BackendService {
     getPreventBackNavigation(){
         console.log("Getting value of prevention is: " + this.prevent_back_navigation);
         return this.prevent_back_navigation;
+    }
+
+    /** ====== TANQUE COMPARISON HELPERS ===== */
+    static compareTanqueByName(tanqueA, tanqueB) {
+        // Use toUpperCase() to ignore character casing
+        const a = tanqueA.name.toUpperCase();
+        const b = tanqueB.name.toUpperCase();
+
+        let comparison = 0;
+        if (a > b) {
+            comparison = 1;
+        } else if (a < b) {
+            comparison = -1;
+        }
+        return comparison;
     }
 }

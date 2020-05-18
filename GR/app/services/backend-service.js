@@ -10,6 +10,11 @@ export default class BackendService {
         this.prevent_back_navigation = false;
         this.firebase_listeners = [];
         this.MAX_RELOAD_TRIES = 10;
+        this.data_listeners = {
+            tanques: null,
+            precios_estados: null,
+            fixed_prices: null
+        };
     }
 
 
@@ -166,6 +171,47 @@ export default class BackendService {
             }
         });
     }
+
+
+    /** ==== EVENT LISTENERS ==== */
+    addTanquesEventListener(tanques_update_function){
+        this.data_listeners.tanques = tanques_update_function;
+    }
+    addPreciosEstadosEventListener(precios_estados_update_function){
+        this.data_listeners.precios_estados = precios_estados_update_function;
+    }
+    addFixedPricesEventListener(fixed_prices_update_function){
+        this.data_listeners.fixed_prices = fixed_prices_update_function;
+    }
+
+    reloadAllData(){
+        console.log("RELOADING ALL THE DATA");
+
+        // 1. Tanques
+        this.readTanques().then(tanques_result => {
+            // Update Listener 
+            this.data_listeners.tanques(tanques_result);
+        }).catch(error => {
+            console.log("Error calling backend service for reloading tanques data: " + error);
+        });
+
+        // 2. Precios Estados
+        this.readPreciosEstados().then(precios_estados_result => {
+            // Update Listener 
+            this.data_listeners.precios_estados(precios_estados_result);
+        }).catch(error => {
+            console.log("Error calling backend service for reloading precios estados data: " + error);
+        });
+
+        // 3. Precios Estados
+        this.readFixedCosts().then(fixed_prices_result => {
+            // Update Listener 
+            this.data_listeners.fixed_prices(fixed_prices_result);
+        }).catch(error => {
+            console.log("Error calling backend service for reloading fixed prices data: " + error);
+        });
+    }
+    
 
 
     /** ========== BACK NAVIGATION VALUE SET/GET ============= */

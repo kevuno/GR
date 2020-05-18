@@ -79,7 +79,9 @@ export default {
             console.log("Error calling backend service for loading tanques: " + error);
         });
 
-        
+        // Add both Precios estados and Fixed prices listeners for future changes in the data
+        this.$backendService.addPreciosEstadosEventListener(this.onPreciosEstadosUpdateCallback);
+        this.$backendService.addFixedPricesEventListener(this.onFixedPricesUpdateCallback);
     },
     computed: {
         // Convert price of gallon in dol lars to liters in pesos
@@ -128,6 +130,16 @@ export default {
                     context: fixed_costs
                 }
             });
+        },
+
+        onPreciosEstadosUpdateCallback(new_precios_estados){
+            console.log("New precios estados data came in!");
+            this.estados = new_precios_estados;
+        },
+
+        onFixedPricesUpdateCallback(new_fixed_prices){
+            console.log("New fixed prices came in!");
+            this.fixed_costs = new_fixed_prices;
         },
 
 

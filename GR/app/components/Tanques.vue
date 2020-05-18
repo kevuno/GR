@@ -80,6 +80,9 @@ export default {
         }).catch(error => {
             console.log("Error calling backend service for loading tanques: " + error);
         });
+
+        // Add this class Listen for future changes in the data
+        this.$backendService.addTanquesEventListener(this.onTanquesUpdateCallback);
     },
     methods: {
         onModificarTanqueTap(tanque){
@@ -198,6 +201,11 @@ export default {
                 },
                 props: {}
             });
+        },
+
+        onTanquesUpdateCallback(new_tanques){
+            console.log("New tanque info came in!");
+            this.tanques = new_tanques;
         },
 
         /// HELPER METHODS ///

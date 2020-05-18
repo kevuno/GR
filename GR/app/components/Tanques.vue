@@ -1,7 +1,10 @@
 <template lang="html">
     <GridLayout rows="auto, auto, *, auto">
         <Label row="0" class="header" text="Tanques activos" />
-        <GridLayout horizontalAlignment="center" class="h3" row="1" columns="*, auto, auto, auto, auto" rows="auto, auto">
+        <GridLayout v-if="!data_loaded" row="1" horizontalAlignment="center">
+            <Label class="h2" text="Cargando datos..."> </Label>
+        </GridLayout>
+        <GridLayout v-else row="1" horizontalAlignment="center" class="h3"  rows="auto, auto" columns="*, auto, auto, auto, auto" >
             <Label row="0" col="0" text="Litros Totales: " fontWeight="Bold" />
             <Label row="0" col="1" :text="litros_total_usados" />
             <Label row="0" col="2" text="/" />
@@ -56,6 +59,7 @@ export default {
         return {
             tanques: [
             ],
+            data_loaded: false,
         }
     },
     computed: {
@@ -77,6 +81,7 @@ export default {
     mounted: function () {
         this.$backendService.readTanques().then(tanques_result =>{ 
             this.tanques = tanques_result;
+            this.data_loaded = true;
         }).catch(error => {
             console.log("Error calling backend service for loading tanques: " + error);
         });
